@@ -1,28 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
 
-{% if form.errors %}
-  <p class='danger'>Invalid login credentials. Try again.</p>
-{% endif %}
-
-{% if next %}
-  {% if user.is_authenticated %}
-    <p class='danger'>Permission denied. If you are seeing this page in error, contact domain administrator.</p>
-  {% else %}
-    <p class='alert'>You must be logged in to see this page.</p>
+<div class="container">
+  {% if form.errors %}
+    <p class='danger'>Invalid login credentials. Try again.</p>
   {% endif %}
-{% endif %}
 
-<form action="{% url 'login' %}" method='post'>
-{% csrf_token %}
-  <table>
-    <tr><td>{{form.username.label_tag}}</td></tr>
-    <tr><td>{{form.username}}</td></tr>
-    <tr><td>{{form.password.label_tag}}</td></tr>
-    <tr><td>{{form.password}}</td></tr>
-  </table>
-  <input type="submit" value="Log In">
-  <input type="hidden" name="next" value="{{next}}">
-</form>
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p class='danger'>Permission denied. If you are seeing this page in error, contact domain administrator.</p>
+    {% else %}
+      <p class='alert'>You must be logged in to see this page.</p>
+    {% endif %}
+  {% endif %}
+
+  <form action="{% url 'login' %}" method='post'>
+  {% csrf_token %}
+    <table>
+      <tr><td>{{form.username.label_tag}}</td></tr>
+      <tr><td>{{form.username}}</td></tr>
+      <tr><td>{{form.password.label_tag}}</td></tr>
+      <tr><td>{{form.password}}</td></tr>
+    </table>
+    <input type="submit" value="Log In">
+    <input type="hidden" name="next" value="{{next}}">
+  </form>
+</div>
 
 {% endblock %}
