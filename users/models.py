@@ -7,7 +7,7 @@ import uuid
 class CustomUser(AbstractUser):
     uuid = models.UUIDField(default=uuid.uuid4)
     bio = models.TextField(max_length=150, null=True, blank=True)
-    avatar = models.ImageField(upload_to='static/users/', null=True, blank=True)
+    avatar = models.ImageField(default='static/users/default.png', upload_to='static/users/', null=True, blank=True)
 
     class Meta:
         ordering = []
