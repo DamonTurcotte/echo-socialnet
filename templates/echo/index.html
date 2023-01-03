@@ -3,7 +3,8 @@
 
 <div class='container'>
 {% if user.is_authenticated %}
-  <p class="text-info">Logged in as <span class='text-primary'>{{user.get_username}}</span></p>
+  <p class="text-info">Logged in as <span class='text-primary'>{{user.get_username}} {{user.uuid}}</span></p>
+  <img src="{{user.avatar}}">
 {% else %}
   <p class="text-info">Browsing as Guest</p>
 {% endif %}
