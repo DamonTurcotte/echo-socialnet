@@ -1,8 +1,8 @@
 from django import forms
-from .models import CustomUser
+from .models import EchoUser
 
-class CustomUserCreationForm(forms.ModelForm):
+class EchoUserCreationForm(forms.ModelForm):
     class Meta:
-        model = CustomUser
+        model = EchoUser
         fields = ['username', 'password', 'bio', 'avatar']
         widgets = { 'password': forms.PasswordInput() }
