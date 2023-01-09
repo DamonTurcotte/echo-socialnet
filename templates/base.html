@@ -5,70 +5,119 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{title|capfirst}}</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  {% load static %}
+  <link rel="shortcut icon" href="{% static 'icons/icon.svg' %}" type="image/svg">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <style>
+    @font-face {
+      font-family: "coda";
+      src: url({% static 'fonts/coda.ttf' %}) format(truetype);
+    }
+  </style>
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg bg-dark bg-gradient" data-bs-theme="dark">
-    <div class="container">
-      <a class="navbar-brand ms-1" href="#">
-        <svg width="24" height="24">
-          <circle cx="12" cy="10" r="8" fill="#fc04" stroke="#71ea9a" stroke-width="1"></circle>
-          <circle cx="12" cy="10" r="6" fill="#fc04" stroke="#71cfaa" stroke-width="1"></circle>
-          <circle cx="12" cy="10" r="4" fill="#fc04" stroke="#71aacf" stroke-width="1"></circle>
-          <circle cx="12" cy="10" r="2" fill="#fc04" stroke="#719aea" stroke-width="1"></circle>
-        </svg>
-        Echo
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+  <header>
+    <div class='header-container'>
 
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'home' %}">Home</a>
-          </li>
+      <div class='logo-container'>
+        <a href="/">
+          <img src="{% static 'icons/logo.svg' %}">
+        </a>
+        <div class='logo'>
+          Echo
+        </div>
+      </div>
 
-          <li class="nav-item">
-            <a class="nav-link" href="#">Browse</a>
-          </li>
+      <div class='auth-container'>
 
-          <li class="nav-item">
-            <a class="nav-link" href="#">Notifications</a>
-          </li>
+        {% if user.is_authenticated %}
+          <a class="auth logout" href="{% url 'logout' %}?next={{request.path}}">
+            <span>Log out</span>
+          </a>
 
-          <li class="nav-item">
-            <a class="nav-link" href="#">Messages</a>
-          </li>
+        {% else %}
+          <a class="auth signup" href="{% url 'users:signup' %}">
+            <span>Sign Up</span>
+          </a>
 
-          <li class="nav-item">
-            <a class="nav-link" href="/users/{{uuid}}">Profile</a>
-          </li>
+          <a class='auth login' href="{% url 'login' %}?next={{request.path}}">
+            <span>Log In</span>
+          </a>
+        {% endif %}
 
-          <li class="nav-item">
-            <a class="nav-link" href="#">Settings</a>
-          </li>
-          
-        </ul>
-        <form class="d-flex" role="search">
-            {% if user.is_authenticated %}
-              <a class='btn btn-outline-danger' href="{% url 'logout' %}?next={{request.path}}">Log out</a>
-            {% else %}
-              <a class="btn btn-outline-success" href="{% url 'users:signup' %}">Sign Up</a>
-              <a class='btn btn-outline-primary' href="{% url 'login' %}?next={{request.path}}">Log In</a>
-            {% endif %}
-        </form>
       </div>
     </div>
-  </nav>
+  </header>
 
-  {% block content %}
 
-  {% endblock %}
 
+  <main>
+    <div class='nav-container'>
+      <div class='user-display'>
+        {% if user.is_authenticated %}
+        <a class='user-link' href="/users/{{user.uuid}}">
+          <img class='user-avatar' src="{{user.avatar.url}}">
+        </a>
+        {% else %}
+        <div class='guest-text'>Browsing as Guest</div>
+        {% endif %}
+      </div>
+        {% if user.is_authenticated %}
+        <a class='make-post' href="#">
+          <div class='make-post-container'>
+            <svg class='make-post-icon' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M481 31C445.1-4.8 386.9-4.8 351 31l-15 15L322.9 33C294.8 4.9 249.2 4.9 221.1 33L135 119c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0L255 66.9c9.4-9.4 24.6-9.4 33.9 0L302.1 80 186.3 195.7 316.3 325.7 481 161c35.9-35.9 35.9-94.1 0-129.9zM293.7 348.3L163.7 218.3 99.5 282.5c-48 48-80.8 109.2-94.1 175.8l-5 25c-1.6 7.9 .9 16 6.6 21.7s13.8 8.1 21.7 6.6l25-5c66.6-13.3 127.8-46.1 175.8-94.1l64.2-64.2z"/></svg>
+            <span class="make-post-text">Post</span>
+          </div>
+        </a>
+        {% endif %}
+      <nav>
+
+        <ul class='nav-list'>
+          <li>
+            <a class='nav-item' href="{% url 'home' %}">           
+              <svg class='nav-icon' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M543.8 287.6c17 0 32-14 32-32.1c1-9-3-17-11-24L512 185V64c0-17.7-14.3-32-32-32H448c-17.7 0-32 14.3-32 32v36.7L309.5 7c-6-5-14-7-21-7s-15 1-22 8L10 231.5c-7 7-10 15-10 24c0 18 14 32.1 32 32.1h32v69.7c-.1 .9-.1 1.8-.1 2.8V472c0 22.1 17.9 40 40 40h16c1.2 0 2.4-.1 3.6-.2c1.5 .1 3 .2 4.5 .2H160h24c22.1 0 40-17.9 40-40V448 384c0-17.7 14.3-32 32-32h64c17.7 0 32 14.3 32 32v64 24c0 22.1 17.9 40 40 40h24 32.5c1.4 0 2.8 0 4.2-.1c1.1 .1 2.2 .1 3.3 .1h16c22.1 0 40-17.9 40-40V455.8c.3-2.6 .5-5.3 .5-8.1l-.7-160.2h32z"/></svg>
+              <span class='nav-text'>Home</span>
+            </a>
+          </li>
+          <li>
+            <a class='nav-item' href="#">
+              <svg class='nav-icon' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M0 128C0 92.7 28.7 64 64 64H448c35.3 0 64 28.7 64 64V384c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V128zm64 32v64c0 17.7 14.3 32 32 32H416c17.7 0 32-14.3 32-32V160c0-17.7-14.3-32-32-32H96c-17.7 0-32 14.3-32 32zM80 320c-13.3 0-24 10.7-24 24s10.7 24 24 24h56c13.3 0 24-10.7 24-24s-10.7-24-24-24H80zm136 0c-13.3 0-24 10.7-24 24s10.7 24 24 24h48c13.3 0 24-10.7 24-24s-10.7-24-24-24H216z"/></svg>
+              <span class='nav-text'>Browse</span>
+            </a>
+          </li>
+          <li>
+            <a class='nav-item' href="#">
+              <svg class='nav-icon' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M224 0c-17.7 0-32 14.3-32 32V51.2C119 66 64 130.6 64 208v18.8c0 47-17.3 92.4-48.5 127.6l-7.4 8.3c-8.4 9.4-10.4 22.9-5.3 34.4S19.4 416 32 416H416c12.6 0 24-7.4 29.2-18.9s3.1-25-5.3-34.4l-7.4-8.3C401.3 319.2 384 273.9 384 226.8V208c0-77.4-55-142-128-156.8V32c0-17.7-14.3-32-32-32zm45.3 493.3c12-12 18.7-28.3 18.7-45.3H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7z"/></svg>
+              <span class='nav-text'>Notifications</span>
+            </a>
+          </li>
+          <li>
+            <a class='nav-item' href="#">
+              <svg class='nav-icon' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M48 64C21.5 64 0 85.5 0 112c0 15.1 7.1 29.3 19.2 38.4L236.8 313.6c11.4 8.5 27 8.5 38.4 0L492.8 150.4c12.1-9.1 19.2-23.3 19.2-38.4c0-26.5-21.5-48-48-48H48zM0 176V384c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V176L294.4 339.2c-22.8 17.1-54 17.1-76.8 0L0 176z"/></svg>
+              <span class='nav-text'>Messages</span>
+            </a>
+          </li>
+          <li>
+            <a class='nav-item' href="#">
+              <svg class='nav-icon' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6c-4.4 11.9-9.7 23.3-15.8 34.3l-4.7 8.1c-6.6 11-14 21.4-22.1 31.2c-5.9 7.2-15.7 9.6-24.5 6.8l-55.7-17.7c-13.4 10.3-28.2 18.9-44 25.4l-12.5 57.1c-2 9.1-9 16.3-18.2 17.8c-13.8 2.3-28 3.5-42.5 3.5s-28.7-1.2-42.5-3.5c-9.2-1.5-16.2-8.7-18.2-17.8l-12.5-57.1c-15.8-6.5-30.6-15.1-44-25.4L83.1 425.9c-8.8 2.8-18.6 .3-24.5-6.8c-8.1-9.8-15.5-20.2-22.1-31.2l-4.7-8.1c-6.1-11-11.4-22.4-15.8-34.3c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4C64.6 273.1 64 264.6 64 256s.6-17.1 1.7-25.4L22.4 191.2c-6.9-6.2-9.6-15.9-6.4-24.6c4.4-11.9 9.7-23.3 15.8-34.3l4.7-8.1c6.6-11 14-21.4 22.1-31.2c5.9-7.2 15.7-9.6 24.5-6.8l55.7 17.7c13.4-10.3 28.2-18.9 44-25.4l12.5-57.1c2-9.1 9-16.3 18.2-17.8C227.3 1.2 241.5 0 256 0s28.7 1.2 42.5 3.5c9.2 1.5 16.2 8.7 18.2 17.8l12.5 57.1c15.8 6.5 30.6 15.1 44 25.4l55.7-17.7c8.8-2.8 18.6-.3 24.5 6.8c8.1 9.8 15.5 20.2 22.1 31.2l4.7 8.1c6.1 11 11.4 22.4 15.8 34.3zM256 336c44.2 0 80-35.8 80-80s-35.8-80-80-80s-80 35.8-80 80s35.8 80 80 80z"/></svg>
+              <span class='nav-text'>Settings</span>
+            </a>
+          </li>
+        </ul>
+
+      </nav>
+    </div>
+
+    <section>
+      {% block content %}
+
+      {% endblock %}
+    </section>
+
+    <aside>
+
+    </aside>
+  </main>
 </body>
 </html>
