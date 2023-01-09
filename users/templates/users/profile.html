@@ -4,7 +4,7 @@
 <div class="container">
   {{profile.username|capfirst}}
   {{profile.bio}}
-  {{profile.avatar}}
+  <img src="{{profile.avatar.url}}">
 </div>
 
 {% endblock %}
