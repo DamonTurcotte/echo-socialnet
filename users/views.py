@@ -24,7 +24,7 @@ def signup_view(request):
 
     return render(request, 'users/signup.html', context=context)
 
-
+@login_required
 def profile_view(request, uuid):
     data = EchoUser.objects.get(uuid=uuid)
     context = {
