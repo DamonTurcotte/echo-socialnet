@@ -23,7 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='home'),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('users/', include('users.urls'))
+    path('users/', include('users.urls')),
+    path('posts/', include('posts.urls'))
 ]
 
 if settings.DEBUG:
