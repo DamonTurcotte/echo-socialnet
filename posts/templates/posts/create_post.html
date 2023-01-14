@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<form class='create-post-container' method="post">
+  {% csrf_token %}
+  
+  <textarea class='create-post-text' name="post" id="post" maxlength="280" placeholder='Write your post here...' autocomplete="off" autofocus required></textarea>
+
+  <input class='create-post-submit' type="submit" value="Post">
+</form>
+
+{% endblock %}
