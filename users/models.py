@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.urls import reverse
+from echo.utils import time_between
 import uuid
 
 
@@ -17,3 +17,6 @@ class EchoUser(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+    def since_last_login(self):
+        return time_between(self.last_login)
