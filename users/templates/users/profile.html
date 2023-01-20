@@ -1,10 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="section-container profile">
+  <div class='profile-banner'>
+    <img src="" alt="">
+    <div class='profile-avatar'>
+      <img src="{{profile.avatar.url}}">
+    </div>
+  </div>
 
-<div class="container">
-  {{profile.username|capfirst}}
-  {{profile.bio}}
-  <img src="{{profile.avatar.url}}">
+  <div class='profile-details'>
+    <div class='profile-container a'>
+      <div class='profile-time-container'>
+        <div class='profile-time a'>
+          <p>Joined</p>
+          <p>Last active:</p> 
+        </div>
+      
+        <div class='profile-time b'>
+          <p>{{profile.date_joined}}</p>
+          <p>{{profile.last_login}}</p>
+        </div>
+      </div>
+
+      <div class='profile-follow'>+ Follow</div>
+    </div>
+
+    <div class="profile-container b">
+      <div class='profile-user'><span class='profile-username'>{{profile.username}}</span> <span class='profile-tag'>@ECHO</span></div>
+    </div>
+
+    <div class="profile-container b">
+      <div class='profile-email'>{{profile.email}}</div>
+    </div>
+
+    <div class="profile-container b">
+      <div class='profile-bio'>{{profile.bio}}</div>
+    </div>
+
+    <div class="profile-container c">
+      <div class='profile-posts'>Posts</div>
+      <div class='profile-replies'>Replies</div>
+      <div class='profile-likes'>Likes</div>
+    </div>
+  </div>
+
 </div>
-
+<form>{% csrf_token %}</form>
 {% endblock %}
