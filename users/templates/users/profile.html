@@ -12,7 +12,7 @@
     <div class='profile-container a'>
       <div class='profile-time-container'>
         <div class='profile-time a'>
-          <p>Joined</p>
+          <p>Joined:</p>
           <p>Last active:</p> 
         </div>
       
@@ -22,7 +22,13 @@
         </div>
       </div>
 
-      <div class='profile-follow'>+ Follow</div>
+      {% if profile.follow_status == 'self' %}
+      <div class='profile-edit'>edit profile</div>
+      {% elif profile.follow_status == 'unfollow' %}
+      <div class='profile-unfollow'>unfollow</div>
+      {% else %}
+      <div class='profile-follow'>follow</div>
+      {% endif %}
     </div>
 
     <div class="profile-container b">
@@ -30,11 +36,25 @@
     </div>
 
     <div class="profile-container b">
-      <div class='profile-email'>{{profile.email}}</div>
+      <div class='profile-bio'>{{profile.bio}}</div>
     </div>
 
     <div class="profile-container b">
-      <div class='profile-bio'>{{profile.bio}}</div>
+      <div class='profile-email'>{{profile.email}}</div>
+    </div>
+
+    <div class='profile-follow-container'>
+
+      <div class='profile-follow-item'>
+        <div class='profile-followers-count'>{{profile.num_followers}}</div>
+        <div class='profile-followers'>Followers</div>
+      </div>
+
+      <div class='profile-follow-item'>
+        <div class='profile-following-count'>{{profile.num_following}}</div>
+        <div class='profile-following'>Following</div>
+      </div>
+      
     </div>
 
     <div class="profile-container c">
