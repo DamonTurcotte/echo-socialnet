@@ -3,6 +3,7 @@ from django.utils import timezone
 import math
 import uuid
 from echo.utils import time_between
+from django.urls import reverse
 
 
 class Post(models.Model):
@@ -16,17 +17,15 @@ class Post(models.Model):
     reply_to = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
     repost_of = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, blank=True, related_name='reposts')
 
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['echouser', 'post'], name='unique_like')
-        ]
-
     def __str__(self):
         post_return = str(self.post).strip()
         if len(post_return) > 50:
             post_return = f'{post_return[0:48].strip()}...'
 
         return f'{self.echouser} || {self.timestamp} || {post_return}'
+    
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.uuid)])
     
     def num_replies(self):
         total = self.replies.count()#type:ignore
@@ -39,7 +38,7 @@ class Post(models.Model):
         return total
     
     def num_reposts(self):
-        total = self.reposts.count()  # type:ignore
+        total = self.reposts.count()# type:ignore
         if total > 1000000:
             total = f'{math.floor(total / 1000000)}M'
         elif total > 1000:
