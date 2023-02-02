@@ -1,15 +1,65 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class='container'>
-  <form action="{% url 'users:signup' %}" method="post" enctype="multipart/form-data">
+<div class='login-container'>
+  <form class="login-form" action="{% url 'users:signup' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
-    {{form.as_p}}
+    <input class="login-username" type="text" id="username" name="username" maxlength="50" placeholder="Username" required>
+      
+    {% if form.errors %}
+    <span class="login-help">50 characters or fewer. (letters, numbers and @/./+/-/_ only)</span>
+    {% endif %}
 
-    <input class="btn btn-success" type="submit" value="Sign Up">
+    
+    <input class="login-password" type="password" id="password1" name="password" maxlength="128" placeholder="Password" required>
+
+    <input class="login-password" type="password" id="password2" name="password" maxlength="128" placeholder="Re-enter password" required>
+
+    <textarea class="login-bio" name="bio" id="bio" cols="35" rows="4" maxlength="140" spellcheck="false" placeholder="Bio (optional)"></textarea>
+
+    <input class="login-avatar" type="file" name="avatar" accept="image/*" id="avatar">
+
+    <div class="login-avatar-container">
+      <input class="login-avatar-button" type="button" onclick="$('.login-avatar').click()" value="Upload Avatar">
+      <input type="text" class="login-avatar-path" placeholder="empty" disabled>
+    </div>
+
+    <div class="crop-container">
+      
+      <div class="crop-image-and-dirs">
+        <div class="crop-y">
+          <input type="button" oncontextmenu="return false" class="crop-up crop-direction"></input>
+        </div>
+
+        <div class='crop-x'>
+          <input type="button" oncontextmenu="return false" class="crop-left crop-direction"></input>
+
+
+          <div class="crop-image">
+            <img class="crop-base" src="#" onload="loadCropTools()" style="top: 0px; left: 0px">
+          </div>
+
+          <input type="button" oncontextmenu="return false" class="crop-right crop-direction"></input>
+        </div>
+
+        <div class="crop-y">
+          <input type="button" oncontextmenu="return false" class="crop-down crop-direction"></input>
+        </div>
+      </div>
+
+    </div>
+
+    <input class="crop-save-x" type="hidden" name="x" value="">
+    <input class="crop-save-y" type="hidden" name="y" value="">
+    <input class="crop-save-width" type="hidden" name="width" value="">
+    <input class="crop-save-height" type="hidden" name="height" value="">
+    <input class="crop-save-dimensions" type="hidden" name="dimensions" value="">
+    
+    <input class="login-submit" type="submit" value="Sign Up">
 
   </form>
+
 </div>
 
 {% endblock %}
