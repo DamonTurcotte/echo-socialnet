@@ -1,30 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="container">
-  {% if form.errors %}
-    <p class='danger'>Invalid login credentials. Try again.</p>
-  {% endif %}
+{% if form.errors %}
+  <p class='login-invalid'>Invalid login credentials. Try again.</p>
+{% endif %}
 
-  {% if next %}
-    {% if user.is_authenticated %}
-      <p class='danger'>Permission denied. If you are seeing this page in error, contact domain administrator.</p>
-    {% else %}
-      <p class='alert'>You must be logged in to see this page.</p>
-    {% endif %}
+{% if next %}
+  {% if user.is_authenticated %}
+    <p class='danger'>Permission denied. If you are seeing this page in error, contact domain administrator.</p>
+  {% else %}
+    <p class='alert'>You must be logged in to view this page.</p>
   {% endif %}
+{% endif %}
 
-  <form action="{% url 'login' %}" method='post'>
+
+<form class="login-form" id="login-form" action="/accounts/login/" method="post">
   {% csrf_token %}
-    <table>
-      <tr><td>{{form.username.label_tag}}</td></tr>
-      <tr><td>{{form.username}}</td></tr>
-      <tr><td>{{form.password.label_tag}}</td></tr>
-      <tr><td>{{form.password}}</td></tr>
-    </table>
-    <input type="submit" value="Log In">
-    <input type="hidden" name="next" value="{{next}}">
-  </form>
-</div>
+
+  <input class="login-username" type="text" name="username" autofocus="true" autocapitalize="none" autocomplete="username" maxlength="25" id="username" placeholder="Username" required>
+
+  <input class="login-password" type="password" name="password" autocomplete="current-password" id="password" placeholder="Password" required>
+
+  <input class="login-submit" id="submit" type="submit" value="Log In">
+  <input type="hidden" name="next" value="{{next}}">
+</form>
 
 {% endblock %}
