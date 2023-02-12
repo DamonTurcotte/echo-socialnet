@@ -1,138 +1,181 @@
-$(document).ready(function () {
-  console.log("jQuery initialized.");
+// RETRIEVE AUTHENTICATION STATUS //
+const currentUserRetrieve = $.get("/ajax/", { action: "auth" });
 
-  // RETRIEVE AUTHENTICATION STATUS //
-  const currentUserRetrieve = $.get("/ajax/", { action: "auth" });
+function currentUserStatus() {
+  return currentUserRetrieve.responseJSON.status;
+}
 
-  function currentUser() {
-    return currentUserRetrieve.responseJSON.status;
-  }
+function currentUser() {
+  return currentUserRetrieve.responseJSON.user;
+}
 
-  // GENERATE CSRF TOKEN //
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-      const cookies = document.cookie.split(";");
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.substring(0, name.length + 1) === name + "=") {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
+// GENERATE CSRF TOKEN //
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
       }
     }
-    return cookieValue;
   }
+  return cookieValue;
+}
 
-  const csrftoken = getCookie("csrftoken");
+const csrftoken = getCookie("csrftoken");
 
-  // Ajax Function Template & On-Success Responses //
-  function interactive(method, url, action, instance) {
-    $.ajax({
-      type: method,
-      url: url,
-      data: {
-        csrfmiddlewaretoken: csrftoken,
-        instance: instance,
-        action: action,
-      },
-      dataType: "json",
-      success: function (data) {
-        console.log(data);
-        if (data["status"] == "liked") {
-          $(`#${data.uuid}`).find(".post-like").addClass("active");
-          val = Number($(`#${data.uuid}`).find(".post-like-count").text()) + 1;
+// Ajax Function Template & On-Success Responses //
+function interactive(method, url, action, instance) {
+  $.ajax({
+    type: method,
+    url: url,
+    data: {
+      csrfmiddlewaretoken: csrftoken,
+      instance: instance,
+      action: action,
+    },
+    dataType: "json",
+    success: function (data) {
+      console.log(data);
+      if (data["status"] == "liked") {
+        $(`#${data.uuid}`).find(".post-like").addClass("active");
+        val = Number($(`#${data.uuid}`).find(".post-like-count").text()) + 1;
+        $(`#${data.uuid}`).find(".post-like-count").text(val);
+      }
+      if (data["status"] == "unliked") {
+        $(`#${data.uuid}`).find(".post-like").removeClass("active");
+        val = Number($(`#${data.uuid}`).find(".post-like-count").text()) - 1;
+        if (val == 0) {
+          $(`#${data.uuid}`).find(".post-like-count").text("");
+        } else {
           $(`#${data.uuid}`).find(".post-like-count").text(val);
         }
-        if (data["status"] == "unliked") {
-          $(`#${data.uuid}`).find(".post-like").removeClass("active");
-          val = Number($(`#${data.uuid}`).find(".post-like-count").text()) - 1;
-          if (val == 0) {
-            $(`#${data.uuid}`).find(".post-like-count").text("");
-          } else {
-            $(`#${data.uuid}`).find(".post-like-count").text(val);
+      }
+      if (data["status"] == "posts_retrieved") {
+        removePosts();
+        renderPosts(data);
+      }
+      if (data["status"] == "post_retrieved") {
+        renderPosts(data);
+        $(".post-reply-count").click()
+      }
+      if (data["status"] == "replies_retrieved") {
+        renderPosts(data);
+      }
+      if (data["status"] == "followed") {
+        $(".profile-follow").text("unfollow");
+        $(".profile-follow").attr("class", "profile-unfollow");
+        val = Number($(".profile-followers-count").text());
+        $(".profile-followers-count").text(val + 1);
+      }
+      if (data["status"] == "unfollowed") {
+        $(".profile-unfollow").text("follow");
+        $(".profile-unfollow").attr("class", "profile-follow");
+        val = Number($(".profile-followers-count").text());
+        $(".profile-followers-count").text(val - 1);
+      }
+    },
+    failure: function () {
+      console.log("failure");
+    },
+  });
+}
+
+function searchEcho(instance, model, query, constraints = "default") {
+  $.ajax({
+    type: "GET",
+    url: "/search/",
+    data: {
+      csrfmiddlewaretoken: csrftoken,
+      model: model,
+      query: query,
+      constraints: constraints
+    },
+    dataType: "json",
+    success: function (data) {
+      console.log(data);
+      if (instance == "message") {
+        $(".user-search-results").children().remove();
+        if (data["users"] == "no results") {
+          $(".user-search-results").append(`
+          <div class="null-result">No users matching query</div>
+          `)
+        } else {
+          for (let user of data["users"]) {
+            $(".user-search-results").append(`
+            <div class="user-search-result">
+              <div class="user-search-avatar"><img src="${user.avatar}" /></div>
+              <div class="user-search-username">${user.username}</div>
+            </div>
+            `)
           }
         }
-        if (data["status"] == "posts_retrieved") {
-          removePosts();
-          renderPosts(data);
-        }
-        if (data["status"] == "replies_retrieved") {
-          renderPosts(data);
-        }
-        if (data["status"] == "followed") {
-          $(".profile-follow").text("unfollow");
-          $(".profile-follow").attr("class", "profile-unfollow");
-          val = Number($(".profile-followers-count").text());
-          $(".profile-followers-count").text(val + 1);
-        }
-        if (data["status"] == "unfollowed") {
-          $(".profile-unfollow").text("follow");
-          $(".profile-unfollow").attr("class", "profile-follow");
-          val = Number($(".profile-followers-count").text());
-          $(".profile-followers-count").text(val - 1);
-        }
-      },
-      failure: function () {
-        console.log("failure");
-      },
-    });
-  }
-
-  // Remove Rendered Posts //
-  function removePosts() {
-    if (document.querySelector(".post-container")) {
-      currentPosts = document.querySelectorAll(".post-container");
-      for (let post of currentPosts) {
-        post.parentElement.remove();
       }
+    },
+    failure: function () {
+      console.log("failure");
+    },
+  });
+}
+
+
+// Remove Rendered Posts //
+function removePosts() {
+  if (document.querySelector(".post-container")) {
+    currentPosts = document.querySelectorAll(".post-container");
+    for (let post of currentPosts) {
+      post.parentElement.remove();
     }
   }
+}
 
-  // Render Fetched Posts & Replies //
-  function renderPosts(data) {
+// Render Fetched Posts & Replies //
+function renderPosts(data) {
+  if (data["status"] == "replies_retrieved") {
+    $(".post-reply-form").remove();
+  }
+
+  for (let post of data["post_list"]) {
+    let object = post["object"];
+    let user = post["echouser"];
+    let userID = post["echouser_id"];
+    let avatar = post["avatar"];
+    let postID = post["post_id"];
+    let content = post["post"];
+    let whenPosted = post["when_posted"];
+    let numLikes = post["num_likes"];
+    let numReplies = post["num_replies"];
+    let numReposts = post["num_reposts"];
+    let liked = post["liked"];
+
+    let replyToName = post["reply_to_name"];
+    let replyToID = post["reply_to_id"];
+
+    let repostID = post["repost_id"];
+    let repostAvatar = post["repost_avatar"];
+    let repostUser = post["repost_user"];
+    let repostPost = post["repost_post"];
+    let repostTime = post["repost_time"];
+    let repost;
+
+    if (object == "reply") {
+      replyToName = `<div class="post-reply-to">Reply<span>@</span>${post["reply_to_name"]}</div>`;
+    } else {
+      replyToName = "";
+    }
+
     if (data["status"] == "replies_retrieved") {
-      $(".post-reply-form").remove();
-    }
-
-    for (let post of data["post_list"]) {
-      let object = post["object"];
-      let user = post["echouser"];
-      let userID = post["echouser_id"];
-      let avatar = post["avatar"];
-      let postID = post["post_id"];
-      let content = post["post"];
-      let whenPosted = post["when_posted"];
-      let numLikes = post["num_likes"];
-      let numReplies = post["num_replies"];
-      let numReposts = post["num_reposts"];
-      let liked = post["liked"];
-
-      let replyToName = post["reply_to_name"];
-      let replyToID = post["reply_to_id"];
-
-      let repostID = post["repost_id"];
-      let repostAvatar = post["repost_avatar"];
-      let repostUser = post["repost_user"];
-      let repostPost = post["repost_post"];
-      let repostTime = post["repost_time"];
-      let repost;
-
-      if (object == "reply") {
-        replyToName = `<div class="post-reply-to">Reply<span>@</span>${post["reply_to_name"]}</div>`;
-      } else {
-        replyToName = "";
-      }
-
-      if (data["status"] == "replies_retrieved") {
-        $(`#${replyToID}`).closest("form").after(`
+      $(`#${replyToID}`).closest("form").after(`
           <div class='reply-container'>
             ${replyToName}
 
             <div class='post-avatar'>
               <img class='post-avatar-img' onclick="location.href='/users/profile/${userID}';" src="${avatar}">
             </div>
-            <div class='post-body'>
+            <div class='post-body' onclick="location.href='/posts/${postID}/';">
               <div class='post-source'>
                 <div class='post-user'>${user}</div>
                 <div class='post-date'>${whenPosted}</div>
@@ -169,10 +212,10 @@ $(document).ready(function () {
             </form>
           </div>
         `);
-      }
+    }
 
-      if (data["status"] == "posts_retrieved") {
-        $("section").append(`
+    if (data["status"] == "posts_retrieved" || data["status"] == "post_retrieved") {
+      $("section").append(`
           <div class='section-container'>
             <div class='post-container'>
 
@@ -226,9 +269,9 @@ $(document).ready(function () {
             </div>
           </div>
         `);
-      }
-      if (object == "repost") {
-        $(`input[value='${postID}']`).closest(".post-body").append(`
+    }
+    if (object == "repost") {
+      $(`input[value='${postID}']`).closest(".post-body").append(`
           <a class="repost-link" href="/posts/${repostID}/">
             <div class="repost-container">
 
@@ -247,18 +290,18 @@ $(document).ready(function () {
             </div>
           </a>
         `);
-      }
     }
   }
+}
 
-  // click() => Generate Reply Textbox //
-  $(document).on("click", ".post-reply", function () {
-    if (currentUser() == "user") {
-      $(".post-reply-form").each(function (index, element) {
-        $(element).remove();
-      });
-      postID = $(this).closest(".post-actions")[0].id;
-      $(this).closest("form").after(`
+// click() => Generate Reply Textbox //
+$(document).on("click", ".post-reply", function () {
+  if (currentUserStatus() == "user") {
+    $(".post-reply-form").each(function (index, element) {
+      $(element).remove();
+    });
+    postID = $(this).closest(".post-actions")[0].id;
+    $(this).closest("form").after(`
         <form class='post-reply-form' action="/posts/newpost/" method="POST">
           <textarea class='post-reply-box' name="post" maxlength="280" placeholder='Write your reply here...' autocomplete="off" autofocus required></textarea>
           <input name="reply_to" type="hidden" value="${postID}">
@@ -267,46 +310,46 @@ $(document).ready(function () {
           <input id='post-reply-submit' type='submit' value='Reply'>
         </form>
       `);
-    } else {
-      location.href = "/accounts/login/?next=/";
-    }
-  });
+  } else {
+    location.href = "/accounts/login/?next=/";
+  }
+});
 
-  // click() => Get Post Replies //
-  $(document).on("click", ".post-reply-count:not(.active)", function () {
-    $container = $(this).closest(".post-container");
-    $(".post-container").not($container).children(".reply-container").remove();
-    $(".post-container")
-      .not($container)
-      .find(".post-reply-count.active")
-      .removeClass("active");
-    $(this).addClass("active");
-    let method = "GET";
-    let url = "/ajax/";
-    let action = "get_post_replies";
-    let instance = $(this).closest(".post-actions")[0].id;
-    interactive(method, url, action, instance);
-  });
+// click() => Get Post Replies //
+$(document).on("click", ".post-reply-count:not(.active)", function () {
+  $container = $(this).closest(".post-container");
+  $(".post-container").not($container).children(".reply-container").remove();
+  $(".post-container")
+    .not($container)
+    .find(".post-reply-count.active")
+    .removeClass("active");
+  $(this).addClass("active");
+  let method = "GET";
+  let url = "/ajax/";
+  let action = "get_post_replies";
+  let instance = $(this).closest(".post-actions")[0].id;
+  interactive(method, url, action, instance);
+});
 
-  // click() => Generate Repost Box //
-  $(document).on("click", ".post-repost", function () {
-    if (currentUser() == "user") {
-      $(".post-reply-form").each(function (index, element) {
-        $(element).remove();
-      });
-      $(".post-repost-form").each(function (index, element) {
-        $(element).remove();
-      });
-      let repostAvatar = $(this)
-        .closest(".post-container")
-        .find(".post-avatar")
-        .clone();
-      let repostContent = $(this)
-        .closest(".post-container")
-        .find(".post-body")
-        .clone();
-      postID = $(this).closest(".post-actions")[0].id;
-      $(this).closest("form").after(`
+// click() => Generate Repost Box //
+$(document).on("click", ".post-repost", function () {
+  if (currentUserStatus() == "user") {
+    $(".post-reply-form").each(function (index, element) {
+      $(element).remove();
+    });
+    $(".post-repost-form").each(function (index, element) {
+      $(element).remove();
+    });
+    let repostAvatar = $(this)
+      .closest(".post-container")
+      .find(".post-avatar")
+      .clone();
+    let repostContent = $(this)
+      .closest(".post-container")
+      .find(".post-body")
+      .clone();
+    postID = $(this).closest(".post-actions")[0].id;
+    $(this).closest("form").after(`
         <form class='post-repost-form' action="/posts/newpost/" method="POST">
           <div class='post-repost-container'>
             <div id='post-repost-clone'>
@@ -320,279 +363,377 @@ $(document).ready(function () {
           </div>
         </form>
       `);
-      $("#post-repost-clone").append(repostAvatar);
-      $("#post-repost-clone").append(repostContent);
-      $("#post-repost-clone").find(".post-avatar-img").removeAttr("onclick");
-      $("#post-repost-clone").find(".post-body").removeAttr("onclick");
-    } else {
-      location.href = "/accounts/login/?next=/";
-    }
-  });
-
-  // click() => Follow //
-  $(document).on("click", ".profile-follow", function () {
-    let method = "POST";
-    let url = "/ajax/";
-    let action = "follow";
-    let instance = location.pathname.split("/")[3];
-    interactive(method, url, action, instance);
-  });
-
-  // click() => Unfollow //
-  $(document).on("click", ".profile-unfollow", function () {
-    let method = "POST";
-    let url = "/ajax/";
-    let action = "follow";
-    let instance = location.pathname.split("/")[3];
-    interactive(method, url, action, instance);
-  });
-
-  // click() => Hide Post Replies //
-  $(document).on("click", ".post-reply-count.active", function () {
-    $container = $(this).closest(".post-container");
-    $(".post-container").not($container).children(".reply-container").remove();
-    $(".post-container")
-      .not($container)
-      .find(".post-reply-count.active")
-      .removeClass("active");
-    $(this).removeClass("active");
-    $(this).closest("form").parent().children(".reply-container").remove();
-  });
-
-  // click() => Toggle Like Status //
-  $(document).on("click", ".post-like", function () {
-    let method = "POST";
-    let url = "/ajax/";
-    let action = "like";
-    let uuid = $(this).closest(".post-actions")[0].id;
-    interactive(method, url, action, uuid);
-  });
-
-  // REMOVE REPLY BOX IF CLICK OUTSIDE PARENT POST //
-  $(document).on("click", function (event) {
-    var $target = $(event.target);
-    if (
-      !$target.closest(".post-container").length &&
-      $(".post-reply-form").is(":visible")
-    ) {
-      $(".post-reply-form").remove();
-    }
-  });
-
-  // HIDE REPOST BOX IF CLICK OUTSIDE //
-  $(document).on("click", ".post-repost-form", function (event) {
-    var $target = $(event.target);
-    if (
-      !$target.closest(".post-repost-container").length &&
-      $(".post-repost-form").is(":visible")
-    ) {
-      $(".post-repost-form").remove();
-    }
-  });
-
-  // GET MAIN POST FEED //
-  if (String(location.pathname) == "/") {
-    let method = "GET";
-    let url = "/ajax/";
-    let action = "get_feed_posts";
-    let instance;
-    if ($(".user-display").has(".user-link").length) {
-      instance = $(".user-link").attr("href").split("/")[3];
-    } else {
-      instance = "guest";
-    }
-    interactive(method, url, action, instance);
+    $("#post-repost-clone").append(repostAvatar);
+    $("#post-repost-clone").append(repostContent);
+    $("#post-repost-clone").find(".post-avatar-img").removeAttr("onclick");
+    $("#post-repost-clone").find(".post-body").removeAttr("onclick");
+  } else {
+    location.href = "/accounts/login/?next=/";
   }
+});
 
-  // GET PROFILE TABS & POSTS //
-  if (String(location.pathname).split("/")[2] == "profile") {
-    let method = "GET";
-    let url = "/ajax/";
-    let action = "get_profile_posts";
-    let instance = $(".profile-username").text();
-    interactive(method, url, action, instance);
+// click() => Follow //
+$(document).on("click", ".profile-follow", function () {
+  let method = "POST";
+  let url = "/ajax/";
+  let action = "follow";
+  let instance = location.pathname.split("/")[3];
+  interactive(method, url, action, instance);
+});
+
+// click() => Unfollow //
+$(document).on("click", ".profile-unfollow", function () {
+  let method = "POST";
+  let url = "/ajax/";
+  let action = "follow";
+  let instance = location.pathname.split("/")[3];
+  interactive(method, url, action, instance);
+});
+
+// click() => Hide Post Replies //
+$(document).on("click", ".post-reply-count.active", function () {
+  $container = $(this).closest(".post-container");
+  $(".post-container").not($container).children(".reply-container").remove();
+  $(".post-container")
+    .not($container)
+    .find(".post-reply-count.active")
+    .removeClass("active");
+  $(this).removeClass("active");
+  $(this).closest("form").parent().children(".reply-container").remove();
+});
+
+// click() => Toggle Like Status //
+$(document).on("click", ".post-like", function () {
+  let method = "POST";
+  let url = "/ajax/";
+  let action = "like";
+  let uuid = $(this).closest(".post-actions")[0].id;
+  interactive(method, url, action, uuid);
+});
+
+// REMOVE REPLY BOX IF CLICK OUTSIDE PARENT POST //
+$(document).on("click", function (event) {
+  var $target = $(event.target);
+  if (
+    !$target.closest(".post-container").length &&
+    $(".post-reply-form").is(":visible")
+  ) {
+    $(".post-reply-form").remove();
   }
+});
 
-  $(document).on("click", ".profile-posts", function () {
-    let method = "GET";
-    let url = "/ajax/";
-    let action = "get_profile_posts";
-    let instance = $(".profile-username").text();
-    interactive(method, url, action, instance);
+// HIDE REPOST BOX IF CLICK OUTSIDE //
+$(document).on("click", ".post-repost-form", function (event) {
+  var $target = $(event.target);
+  if (
+    !$target.closest(".post-repost-container").length &&
+    $(".post-repost-form").is(":visible")
+  ) {
+    $(".post-repost-form").remove();
+  }
+});
+
+// GET MAIN POST FEED //
+if (String(location.pathname) == "/") {
+  let method = "GET";
+  let url = "/ajax/";
+  let action = "get_feed_posts";
+  let instance;
+  if ($(".user-display").has(".user-link").length) {
+    instance = $(".user-link").attr("href").split("/")[3];
+  } else {
+    instance = "guest";
+  }
+  interactive(method, url, action, instance);
+}
+
+// GET POST DETAIL //
+if (
+  location.pathname.split("/")[1] == "posts" &&
+  location.pathname.split("/")[2].length == 36
+) {
+  let postID = String(location.pathname.split("/")[2]);
+  let method = "GET";
+  let url = `/posts/${postID}/`;
+  let action = "get_post_detail";
+  let instance = postID;
+  interactive(method, url, action, instance);
+}
+
+// GET PROFILE TABS & POSTS //
+if (String(location.pathname).split("/")[2] == "profile") {
+  let method = "GET";
+  let url = "/ajax/";
+  let action = "get_profile_posts";
+  let instance = $(".profile-username").text();
+  interactive(method, url, action, instance);
+}
+
+$(document).on("click", ".profile-posts", function () {
+  let method = "GET";
+  let url = "/ajax/";
+  let action = "get_profile_posts";
+  let instance = $(".profile-username").text();
+  interactive(method, url, action, instance);
+});
+
+$(document).on("click", ".profile-replies", function () {
+  let method = "GET";
+  let url = "/ajax/";
+  let action = "get_profile_replies";
+  let instance = $(".profile-username").text();
+  interactive(method, url, action, instance);
+});
+
+$(document).on("click", ".profile-likes", function () {
+  let method = "GET";
+  let url = "/ajax/";
+  let action = "get_profile_likes";
+  let instance = $(".profile-username").text();
+  interactive(method, url, action, instance);
+});
+
+/* CROP AVATAR */
+function loadCropTools() {
+  $(".crop-base").css({
+    top: "0px",
+    left: "0px",
+    height: "auto",
+    width: "auto",
   });
+  $(".crop-direction").removeClass("active");
 
-  $(document).on("click", ".profile-replies", function () {
-    let method = "GET";
-    let url = "/ajax/";
-    let action = "get_profile_replies";
-    let instance = $(".profile-username").text();
-    interactive(method, url, action, instance);
-  });
+  let initialHeight = $(".crop-base").height();
+  let initialWidth = $(".crop-base").width();
 
-  $(document).on("click", ".profile-likes", function () {
-    let method = "GET";
-    let url = "/ajax/";
-    let action = "get_profile_likes";
-    let instance = $(".profile-username").text();
-    interactive(method, url, action, instance);
-  });
-
-  /* CROP AVATAR */
-  function loadCropTools() {
+  if (initialWidth > initialHeight) {
     $(".crop-base").css({
-      top: "0px",
-      left: "0px",
-      height: "auto",
+      height: "inherit",
       width: "auto",
     });
-    $(".crop-direction").removeClass("active");
-
-    let initialHeight = $(".crop-base").height();
-    let initialWidth = $(".crop-base").width();
-
-    if (initialWidth > initialHeight) {
-      $(".crop-base").css({
-        height: "inherit",
-        width: "auto",
-      });
-      $(".crop-right").addClass("active");
-    } else if (initialHeight > initialWidth) {
-      $(".crop-base").css({
-        height: "auto",
-        width: "inherit",
-      });
-      $(".crop-down").addClass("active");
-    } else {
-      $(".crop-base").css({
-        height: "inherit",
-        width: "inherit",
-      });
-    }
-
-    let dimensions = Math.min(initialWidth, initialHeight);
-    $(".crop-base").attr({
-      dimensions: dimensions,
-      initialheight: initialHeight,
-      initialwidth: initialWidth,
+    $(".crop-right").addClass("active");
+  } else if (initialHeight > initialWidth) {
+    $(".crop-base").css({
+      height: "auto",
+      width: "inherit",
     });
-
-    let newWidth = $(".crop-base").width();
-    let newHeight = $(".crop-base").height();
-    let newDimensions = Math.min(newWidth, newHeight);
-    $(".crop-save-width").val(newWidth);
-    $(".crop-save-height").val(newHeight);
-    $(".crop-save-dimensions").val(newDimensions);
-    $(".crop-save-x").val(-+$(".crop-base").css("left").split("px")[0]);
-    $(".crop-save-y").val(-+$(".crop-base").css("top").split("px")[0]);
+    $(".crop-down").addClass("active");
+  } else {
+    $(".crop-base").css({
+      height: "inherit",
+      width: "inherit",
+    });
   }
 
-  /* click() -> Move Right | Crop Reticle */
-  $(document).on("pointerdown", ".crop-right.active", function (e) {
-    const rangeX = Math.floor(
-      $(".crop-base").width() - $(".crop-image").width()
-    );
-    $(".crop-left").addClass("active");
+  let dimensions = Math.min(initialWidth, initialHeight);
+  $(".crop-base").attr({
+    dimensions: dimensions,
+    initialheight: initialHeight,
+    initialwidth: initialWidth,
+  });
 
-    let intervalID = setInterval(function () {
-      let currentLeft = Number($(".crop-base").css("left").split("px")[0]);
-      if (-currentLeft < rangeX) {
-        $(".crop-base").css("left", `${currentLeft - 1}px`);
-      } else {
-        $(".crop-save-x").val(-+$(".crop-base").css("left").split("px")[0]);
-        clearInterval(intervalID);
-        $(".crop-right").removeClass("active");
-      }
-    }, 5);
+  let newWidth = $(".crop-base").width();
+  let newHeight = $(".crop-base").height();
+  let newDimensions = Math.min(newWidth, newHeight);
+  $(".crop-save-width").val(newWidth);
+  $(".crop-save-height").val(newHeight);
+  $(".crop-save-dimensions").val(newDimensions);
+  $(".crop-save-x").val(-+$(".crop-base").css("left").split("px")[0]);
+  $(".crop-save-y").val(-+$(".crop-base").css("top").split("px")[0]);
+}
 
-    $(document).on("pointerup", function () {
+/* click() -> Move Right | Crop Reticle */
+$(document).on("pointerdown", ".crop-right.active", function (e) {
+  const rangeX = Math.floor($(".crop-base").width() - $(".crop-image").width());
+  $(".crop-left").addClass("active");
+
+  let intervalID = setInterval(function () {
+    let currentLeft = Number($(".crop-base").css("left").split("px")[0]);
+    if (-currentLeft < rangeX) {
+      $(".crop-base").css("left", `${currentLeft - 1}px`);
+    } else {
       $(".crop-save-x").val(-+$(".crop-base").css("left").split("px")[0]);
       clearInterval(intervalID);
-    });
-  });
-
-  /* click() -> Move Left | Crop Reticle */
-  $(document).on("pointerdown", ".crop-left.active", function (e) {
-    $(".crop-right").addClass("active");
-
-    let intervalID = setInterval(function () {
-      let currentLeft = Number($(".crop-base").css("left").split("px")[0]);
-      if (currentLeft < 0) {
-        $(".crop-base").css("left", `${currentLeft + 1}px`);
-      } else {
-        $(".crop-save-x").val(-+$(".crop-base").css("left").split("px")[0]);
-        clearInterval(intervalID);
-        $(".crop-left").removeClass("active");
-      }
-    }, 5);
-
-    $(document).on("pointerup", function () {
-      $(".crop-save-x").val(-+$(".crop-base").css("left").split("px")[0]);
-      clearInterval(intervalID);
-    });
-  });
-
-  /* click() -> Move Down | Crop Reticle */
-  $(document).on("pointerdown", ".crop-down.active", function (e) {
-    const rangeY = Math.floor(
-      $(".crop-base").height() - $(".crop-image").height()
-    );
-    $(".crop-up").addClass("active");
-
-    let intervalID = setInterval(function () {
-      let currentTop = +$(".crop-base").css("top").split("px")[0];
-      if (-currentTop < rangeY) {
-        $(".crop-base").css("top", `${currentTop - 1}px`);
-      } else {
-        clearInterval(intervalID);
-        $(".crop-save-y").val(-+$(".crop-base").css("top").split("px")[0]);
-        $(".crop-down").removeClass("active");
-      }
-    }, 5);
-
-    $(document).on("pointerup", function () {
-      $(".crop-save-y").val(-+$(".crop-base").css("top").split("px")[0]);
-      clearInterval(intervalID);
-    });
-  });
-
-  /* click() -> Move Up | Crop Reticle */
-  $(document).on("pointerdown", ".crop-up.active", function (e) {
-    $(".crop-down").addClass("active");
-
-    let intervalID = setInterval(function () {
-      let currentTop = Number($(".crop-base").css("top").split("px")[0]);
-      if (currentTop < 0) {
-        $(".crop-base").css("top", `${currentTop + 1}px`);
-      } else {
-        clearInterval(intervalID);
-        $(".crop-save-y").val(-+$(".crop-base").css("top").split("px")[0]);
-        $(".crop-up").removeClass("active");
-      }
-    }, 5);
-
-    $(document).on("pointerup", function () {
-      $(".crop-save-y").val(-+$(".crop-base").css("top").split("px")[0]);
-      clearInterval(intervalID);
-    });
-  });
-
-  /* Sign-up Avatar Preview & Crop */
-  $(document).on("change", ".login-avatar", function () {
-    let file = this.files[0];
-    try {
-      $(".login-avatar-path").attr("value", file.name);
-    } catch {
-      $(".login-avatar-path").removeAttr("value");
-      $(".crop-container").removeClass("active");
+      $(".crop-right").removeClass("active");
     }
-    reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function (e) {
-      $(".crop-base").attr("src", this.result);
-    };
-    reader.onerror = function (e) {
-      console.log(e);
-    };
-    $(".crop-container").addClass("active");
+  }, 5);
+
+  $(document).on("pointerup", function () {
+    $(".crop-save-x").val(-+$(".crop-base").css("left").split("px")[0]);
+    clearInterval(intervalID);
   });
+});
+
+/* click() -> Move Left | Crop Reticle */
+$(document).on("pointerdown", ".crop-left.active", function (e) {
+  $(".crop-right").addClass("active");
+
+  let intervalID = setInterval(function () {
+    let currentLeft = Number($(".crop-base").css("left").split("px")[0]);
+    if (currentLeft < 0) {
+      $(".crop-base").css("left", `${currentLeft + 1}px`);
+    } else {
+      $(".crop-save-x").val(-+$(".crop-base").css("left").split("px")[0]);
+      clearInterval(intervalID);
+      $(".crop-left").removeClass("active");
+    }
+  }, 5);
+
+  $(document).on("pointerup", function () {
+    $(".crop-save-x").val(-+$(".crop-base").css("left").split("px")[0]);
+    clearInterval(intervalID);
+  });
+});
+
+/* click() -> Move Down | Crop Reticle */
+$(document).on("pointerdown", ".crop-down.active", function (e) {
+  const rangeY = Math.floor(
+    $(".crop-base").height() - $(".crop-image").height()
+  );
+  $(".crop-up").addClass("active");
+
+  let intervalID = setInterval(function () {
+    let currentTop = +$(".crop-base").css("top").split("px")[0];
+    if (-currentTop < rangeY) {
+      $(".crop-base").css("top", `${currentTop - 1}px`);
+    } else {
+      clearInterval(intervalID);
+      $(".crop-save-y").val(-+$(".crop-base").css("top").split("px")[0]);
+      $(".crop-down").removeClass("active");
+    }
+  }, 5);
+
+  $(document).on("pointerup", function () {
+    $(".crop-save-y").val(-+$(".crop-base").css("top").split("px")[0]);
+    clearInterval(intervalID);
+  });
+});
+
+/* click() -> Move Up | Crop Reticle */
+$(document).on("pointerdown", ".crop-up.active", function (e) {
+  $(".crop-down").addClass("active");
+
+  let intervalID = setInterval(function () {
+    let currentTop = Number($(".crop-base").css("top").split("px")[0]);
+    if (currentTop < 0) {
+      $(".crop-base").css("top", `${currentTop + 1}px`);
+    } else {
+      clearInterval(intervalID);
+      $(".crop-save-y").val(-+$(".crop-base").css("top").split("px")[0]);
+      $(".crop-up").removeClass("active");
+    }
+  }, 5);
+
+  $(document).on("pointerup", function () {
+    $(".crop-save-y").val(-+$(".crop-base").css("top").split("px")[0]);
+    clearInterval(intervalID);
+  });
+});
+
+/* Sign-up Avatar Preview & Crop */
+$(document).on("change", ".login-avatar", function () {
+  let file = this.files[0];
+  try {
+    $(".login-avatar-path").attr("value", file.name);
+  } catch {
+    $(".login-avatar-path").removeAttr("value");
+    $(".crop-container").removeClass("active");
+  }
+  reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function (e) {
+    $(".crop-base").attr("src", this.result);
+  };
+  reader.onerror = function (e) {
+    console.log(e);
+  };
+  $(".crop-container").addClass("active");
+});
+
+
+/* USER SEARCH - MESSAGES */
+$(document).on("input", ".chat-user-search", function () {
+  if (!$(".user-search-results").length) {
+    $(".chat-user-search").after(`
+      <div class='user-search-results message' style="top: ${
+        $(".chat-user-search").height() + $(".chat-user-search").offset().top
+      }px">
+      </div>
+    `);
+  }
+  if ($(".chat-user-search").val().length == 0) {
+    $(".user-search-results").remove();
+  } else {
+    let instance = "message";
+    let model = "users";
+    let query = $(this).val();
+    searchEcho(instance, model, query);
+  }
+})
+
+/* click() => close search results if click outside */
+if (location.pathname.split("/")[1] == "chat") {
+  $(document).on("click", function (e) {
+    let $container = $(".chat-to");
+    if (!$container.is(e.target) && $container.has(e.target).length === 0) {
+      $(".user-search-results").remove()
+      $(".chat-user-search").val(null)
+    } 
+  });
+}
+
+/* click() => Get or Create Private Chat */
+$(document).on("click", ".user-search-result", function (event) {
+  let $target = $(event.target);
+  $user = $target.closest(".user-search-result");
+  let username = $user.find(".user-search-username").text();
+
+  $.post("/chat/", {
+    csrfmiddlewaretoken: csrftoken,
+    recipient: username,
+  })
+    .done(function (data) {
+      let uuid = data['chat_uuid']
+      location.pathname = `/chat/${uuid}/`
+    })
+
+});
+
+/* click() => Send private message to user */
+$(document).on("click", ".message-send", function () {
+  if ($(".message-write-input").val() == false) {
+    return false
+  }
+  $.post("/chat/ajax/", {
+    csrfmiddlewaretoken: csrftoken,
+    action: "post_message",
+    chat: $(".chat-uuid").val(),
+    sender: currentUser(),
+    receiver: $(".message-to-username").text(),
+    message: $(".message-write-input").val(),
+  })
+    .done(function (data) {
+      $(".message-dialogue").children().remove();
+      for (let message of data["messages"]) {
+        if (message['sender'] === true) {
+          $(".message-dialogue").append(`
+          <div class='message-sent-container'>
+            <div class='message-sent'>
+              ${message["content"]}
+            </div>
+            <div class="message-timestamp">${message["timestamp"]}</div>
+          </div>
+          `)
+        } else {
+          $(".message-dialogue").append(`
+          <div class="message-received-container">
+            <div class="message-received">
+              ${message["content"]}
+            </div>
+            <div class="message-timestamp">${message["timestamp"]}</div>
+          </div>
+          `)
+        }
+      }
+    })
 });
