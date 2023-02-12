@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="chat-list-container">
+
+  <div class="chat-list-header">
+    
+    <div class='chat-to'>
+      <div class="chat-to-label">To:</div>
+      <input class='chat-user-search' type="search" placeholder='Begin typing for suggestions...'>
+    </div>
+
+  </div>
+
+  <div class="chat-list">
+
+      {% for chat in chats %}
+      <a class="chat-instance" onclick="location.href='/chat/{{chat.uuid}}'">
+
+        <img class="chat-avatar" src="{{chat.user.avatar.url}}">
+
+        <div class="chat-details">
+          <div class="chat-user">
+            <div class="chat-user-username">{{chat.user.username}}</div>
+            <div class="chat-user-timestamp">{{chat.timestamp}}</div>
+          </div>
+
+          <div class="chat-preview-message">{{chat.last_message}}</div>
+        </div>
+
+      </a>
+      {% endfor %}
+
+  </div>
+
+</div>
+
+{% endblock %}
