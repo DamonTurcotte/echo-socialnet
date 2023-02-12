@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="message-container">
+  <div class='message-header'>
+    <input type="hidden" name="chat" class="chat-uuid" value={{chat.uuid}}>
+    <div class="message-to-user">
+      <div>
+        <img class="message-to-image" src="{{recipient.avatar.url}}"/>
+      </div>
+
+      <span name="to_echouser" class="message-to-username">{{recipient.username}}</span>
+    </div>
+
+  </div>
+
+  <div class='message-content'>
+
+    <div class="conversation">
+      <div class="message-dialogue-container">
+        <div class="message-dialogue">
+
+          {% for message in messages %}
+            {% if message.sender is True %}
+            <div class='message-sent-container'>
+              <div class='message-sent'>
+                {{message.content}}
+              </div>
+              <div class="message-timestamp">
+                {{message.timestamp}}
+              </div>
+            </div>
+
+            {% else %}
+            <div class="message-received-container">
+              <div class="message-received">
+                {{message.content}}
+              </div>
+              <div class="message-timestamp">
+                {{message.timestamp}}
+              </div>
+            </div>
+            {% endif %}
+          {% endfor %}
+
+        </div>
+      </div>
+
+      <div class="message-write">
+        <textarea class="message-write-input" name="message" id="" cols="30" maxlength="280"></textarea>
+        <input type="button" class="message-send" value="Send">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
