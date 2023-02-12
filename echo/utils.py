@@ -75,13 +75,13 @@ def make_post_objects(posts_queryset, request_username):
         post_view['object'] = ['post']
 
         alt_post_fields = [
-             'reply_to_id',
-              'reply_to_name',
-              'repost_id',
-              'repost_avatar',
-              'repost_user',
-              'repost_time',
-              'repost_post'
+            'reply_to_id',
+            'reply_to_name',
+            'repost_id',
+            'repost_avatar',
+            'repost_user',
+            'repost_time',
+            'repost_post'
         ]
 
         for field in alt_post_fields:
