@@ -89,9 +89,7 @@ def chat_response(request):
 
             if form.is_valid():
                 form.save()
-
-                chat_messages = PvtMessage.objects.filter(chat=chat).order_by('timestamp').reverse()
-                messages = message_list(chat_messages, request.user)
+                messages = message_list(chat, request.user)
 
                 return JsonResponse({'messages':messages})
             
