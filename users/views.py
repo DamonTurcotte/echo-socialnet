@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth import login
 from django.core.files.base import ContentFile
+from django.contrib.auth.hashers import make_password
 from .forms import EchoUserCreationForm
 from .models import EchoUser, Follow
 from django.contrib.auth.decorators import login_required
@@ -15,8 +16,9 @@ def signup_view(request):
         form = EchoUserCreationForm(request.POST, request.FILES)
         
         if form.is_valid():
+            hashed_pass = make_password(request.POST['password'])
+
             try:
-                print(request.FILES['avatar'])
                 upload = True
             except:
                 upload = False
@@ -36,6 +38,9 @@ def signup_view(request):
                 new_image.save(new_image_io, format='webp')
 
                 user = form.save(commit=False)
+
+                user.password = hashed_pass
+
                 user.avatar.delete(save=False)
                 temp_name = f'{user.uuid}.webp'
                 user.avatar.save(
@@ -48,7 +53,9 @@ def signup_view(request):
                 return redirect(reverse('home'))
             
             else:
-                user = form.save()
+                user = form.save(commit=False)
+                user.password = hashed_pass
+                user.save()
                 login(request, user)
                 return redirect(reverse('home'))
 
