@@ -2,34 +2,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.db.models import Q
-from .models import PrivateMessage, Chat, PvtMessage
+from .models import Chat, PvtMessage
 from users.models import EchoUser
 from .forms import CreatePvtMessageForm
+from chat.utils import message_list
 
-
-def message_list(chat_query, current_user):
-    chat_messages = PvtMessage.objects.filter(chat=chat_query).order_by('timestamp').reverse()
-    message_list = []
-    for item in chat_messages:
-        if item.message == '':
-            continue
-
-        message_obj = dict()
-                    
-        if item.sender == current_user:
-            sender = True
-        else:
-            sender = False
-                
-        message = item.message
-                    
-        message_obj['sender'] = sender
-        message_obj['content'] = message
-        message_obj['timestamp'] = item.when_last()#type:ignore
-        message_list.append(message_obj)
-
-    return message_list
 
 
 @login_required
@@ -114,26 +91,9 @@ def chat_response(request):
                 form.save()
 
                 chat_messages = PvtMessage.objects.filter(chat=chat).order_by('timestamp').reverse()
-                message_list = []
-                for item in chat_messages:
-                    if item.message == '':
-                        continue
+                messages = message_list(chat_messages, request.user)
 
-                    message_obj = dict()
-                    
-                    if item.sender == request.user:
-                        sender = True
-                    else:
-                        sender = False
-                
-                    message = item.message
-                    
-                    message_obj['sender'] = sender
-                    message_obj['content'] = message
-                    message_obj['timestamp'] = item.when_last()#type:ignore
-                    message_list.append(message_obj)
-
-                return JsonResponse({'messages':message_list})
+                return JsonResponse({'messages':messages})
             
             else:
                 return JsonResponse({})
