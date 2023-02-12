@@ -695,8 +695,7 @@ $(document).on("click", ".user-search-result", function (event) {
     .done(function (data) {
       let uuid = data['chat_uuid']
       location.pathname = `/chat/${uuid}/`
-    })
-
+    });
 });
 
 /* click() => Send private message to user */
@@ -735,5 +734,6 @@ $(document).on("click", ".message-send", function () {
           `)
         }
       }
+      $(".message-dialogue-container").scrollTop($(".message-dialogue").height());
     })
 });
