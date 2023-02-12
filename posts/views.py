@@ -38,23 +38,26 @@ def create_post(request):
 
 
 def post_detail_view(request, uuid):
-    post_list = list()
     main_post = Post.objects.get(uuid=uuid)
-    post_list.append(main_post)
+    post_author = main_post.echouser.username
 
-    if main_post.reply_to != None:
-        reply_to = main_post.reply_to
-        post_list.append(reply_to)
+    try:
+        if request.GET['action'] == 'get_post_detail':
+            post_as_list = [main_post]
+            post_list = make_post_objects(post_as_list, request.user)
 
-    if main_post.replies.exists():#type:ignore
-        for reply in main_post.replies.all():#type:ignore
-            post_list.append(reply)
+            data = {
+                'post_list': post_list,
+                'status': 'post_retrieved'
+                }
 
-    post_list = make_post_objects(post_list, request.user)
-    
-    context = {
-        'title': 'Post | Echo',
-        'post_list': post_list
+            return JsonResponse(data)
+
+    except:
+        context = {
+         'title': f'{post_author}\'s Post | Echo'
         }
+
+        return render(request, 'posts/post_detail.html', context=context)
     
-    return render(request, 'posts/post_detail.html', context=context)
+    return render(request, 'posts/post_detail.html')
