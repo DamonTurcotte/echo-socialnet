@@ -5,8 +5,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 
+# Main page logic is contained in Echo.JS and Views.AJAX_response
 def index(request):
-
     context = {
         'title': 'Home | Echo Social',
     }
@@ -21,10 +21,16 @@ def ajax_response(request):
 
         if request.GET['action'] == 'auth':
             if request.user.is_authenticated:
-                return JsonResponse({'status': 'user'})
+                return JsonResponse({
+                    'status': 'user',
+                    'user': request.user.username
+                    })
 
             else:
-                return JsonResponse({'status': 'guest'})
+                return JsonResponse({
+                    'status': 'guest',
+                    'user': None
+                    })
 
         posts = Post.objects.order_by('timestamp').reverse().all()
         echouser = request.user
@@ -149,6 +155,44 @@ def ajax_response(request):
             else:
                 echouser.follow.add(profile)
                 data['status'] = 'followed'
+
+            return JsonResponse(data)
+
+    return render(request, '404.html')
+
+
+def search_response(request):
+    if request.GET['model'] == 'users':
+        query = request.GET['query']
+        if query:
+            user_list = []
+            names = []
+            results = EchoUser.objects.filter(username__startswith=query).order_by('last_login').reverse()
+            for result in results:
+                if len(user_list) < 5:
+                    user = dict()
+                    user['username'] = result.username
+                    user['avatar'] = result.avatar.url
+                    user_list.append(user)
+                    names.append(result.username)
+                
+                else: break
+            
+            if len(user_list) < 5:
+                results = EchoUser.objects.filter(username__icontains=query).exclude(username__in=names)
+                for result in results:
+                    if len(user_list) < 5:
+                        user = dict()
+                        user['username'] = result.username
+                        user['avatar'] = result.avatar.url
+                        user_list.append(user)
+
+                    else: break
+            
+            if len(user_list) > 0:
+                data = { 'users': user_list }
+            else:
+                data = { 'users': "no results" }
 
             return JsonResponse(data)
 
