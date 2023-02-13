@@ -2,13 +2,12 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from echo.utils import time_between
 import uuid
-from io import BytesIO
-from PIL import Image
+from notifications.models import Alerts
 
 
 class EchoUser(AbstractUser):
     app_name = 'users'
-
+    
     id = models.BigAutoField(primary_key=True)
     uuid = models.UUIDField(default=uuid.uuid4)
     bio = models.TextField(max_length=150, null=True, blank=True)
@@ -41,3 +40,9 @@ class Follow(models.Model):
 
     def since_follow(self):
         return time_between(self.followed_at)
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        Alerts.objects.create(type='follow', recipient=self.follow, by_user=self.echouser, follow=self)
+
