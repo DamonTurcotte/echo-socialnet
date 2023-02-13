@@ -4,6 +4,7 @@ import math
 import uuid
 from echo.utils import time_between
 from django.urls import reverse
+from notifications.models import Alerts
 
 
 class Post(models.Model):
@@ -16,6 +17,25 @@ class Post(models.Model):
     likes = models.ManyToManyField('users.EchoUser', related_name='liked')
     reply_to = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
     repost_of = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, blank=True, related_name='reposts')
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.reply_to != None:
+            Alerts.objects.create(
+                type='reply',
+                recipient=self.reply_to.echouser,  # type:ignore
+                by_user=self.echouser,
+                post=self
+            )
+
+        if self.repost_of != None:
+            Alerts.objects.create(
+                type='repost',
+                recipient=self.repost_of.echouser,  # type:ignore
+                by_user=self.echouser,
+                post=self
+            )
 
     def __str__(self):
         post_return = str(self.post).strip()
