@@ -14,21 +14,25 @@ def create_post(request):
 
         try:
             try:
-                repost_of = request.POST['repost_of']
-                repost_of = Post.objects.get(uuid=repost_of)
-                Post.objects.create(post=post, echouser=echouser, repost_of=repost_of)
+                repost_target = request.POST['repost_of']
+                repost_of = Post.objects.get(uuid=repost_target)
+                repost = Post(post=post, echouser=echouser, repost_of=repost_of)
+                repost.save()
+                
 
                 return redirect(request.POST['newpath'])
 
             except:
-                reply_to = request.POST['reply_to']
-                reply_to = Post.objects.get(uuid=reply_to)
-                Post.objects.create(post=post, echouser=echouser, reply_to=reply_to)
+                reply_target = request.POST['reply_to']
+                reply_to = Post.objects.get(uuid=reply_target)
+                reply = Post(post=post, echouser=echouser, reply_to=reply_to)
+                reply.save()
 
                 return redirect(request.POST['newpath'])
         
         except:
-            Post.objects.create(post=post, echouser=echouser)
+            new_post = Post(post=post, echouser=echouser)
+            new_post.save()
             return redirect(reverse('home'))
     
     context = {
