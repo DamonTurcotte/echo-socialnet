@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from posts.models import Post
 from users.models import EchoUser, Follow
+from notifications.models import Alerts
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 
@@ -127,7 +128,7 @@ def ajax_response(request):
             uuid = post.uuid
             
             if post.likes.filter(username=request.user).exists():
-                post.likes.remove(EchoUser.objects.get(username=request.user))
+                post.likes.remove(request.user)
                 print('Unliked')
                 data = {
                     'status': 'unliked',
@@ -136,7 +137,12 @@ def ajax_response(request):
                 return JsonResponse(data)
 
             else:
-                post.likes.add(EchoUser.objects.get(username=request.user))
+                post.likes.add(request.user)
+                
+                if post.echouser.notifs.filter(type='like', by_user=request.user, post=post).exists() == False:
+                    alert = Alerts(type='like', recipient=post.echouser, by_user=request.user, post=post)
+                    alert.save()
+
                 data = {
                     'status': 'liked',
                     'uuid': uuid
