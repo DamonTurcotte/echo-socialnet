@@ -149,11 +149,12 @@ def ajax_response(request):
             data = {}
 
             if Follow.objects.filter(echouser=echouser, follow=profile).exists():
-                echouser.follow.remove(profile)
+                Follow.objects.filter(echouser=echouser, follow=profile).delete()
                 data['status'] = 'unfollowed'
 
             else:
-                echouser.follow.add(profile)
+                new_follow = Follow(echouser=echouser, follow=profile)
+                new_follow.save()
                 data['status'] = 'followed'
 
             return JsonResponse(data)
