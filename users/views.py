@@ -19,6 +19,7 @@ def signup_view(request):
             hashed_pass = make_password(request.POST['password'])
 
             try:
+                request.FILES['avatar']
                 upload = True
             except:
                 upload = False
