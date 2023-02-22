@@ -735,5 +735,6 @@ $(document).on("click", ".message-send", function () {
         }
       }
       $(".message-dialogue-container").scrollTop($(".message-dialogue").height());
+      $(".message-write-input").val('');
     })
 });
