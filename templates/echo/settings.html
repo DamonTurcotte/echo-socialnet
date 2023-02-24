@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="settings-container">
+  {% if user.is_authenticated %}
+  <a class="settings-logout" href="{% url 'logout' %}?next={{request.path}}">
+    <span>Log out</span>
+  </a>
+
+  {% else %}
+    <a class="settings-signup" href="{% url 'users:signup' %}">
+      <span>Sign Up</span>
+    </a>
+
+    <a class='settings-login' href="{% url 'login' %}">
+      <span>Log In</span>
+    </a>
+  {% endif %}
+</div>
+
+{% endblock %}
