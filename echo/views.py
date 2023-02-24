@@ -204,3 +204,11 @@ def search_response(request):
             return JsonResponse(data)
 
     return render(request, '404.html')
+
+def under_construction(request):
+    context = {'title': 'Under Construction | Echo Social'}
+    return render(request, 'echo/todo.html', context=context)
+
+def settings_view(request):
+    context = {'title': 'Settings | Echo Social'}
+    return render(request, 'echo/settings.html', context=context)
