@@ -28,7 +28,9 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('posts/', include('posts.urls')),
     path('chat/', include('chat.urls')),
-    path('alerts/', include('notifications.urls'))
+    path('alerts/', include('notifications.urls')),
+    path('browse/', views.under_construction),
+    path('settings/', views.settings_view)
 ]
 
 if settings.DEBUG:
