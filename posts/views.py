@@ -19,8 +19,7 @@ def create_post(request):
                 repost = Post(post=post, echouser=echouser, repost_of=repost_of)
                 repost.save()
                 
-
-                return redirect(request.POST['newpath'])
+                return redirect(f'/posts/{repost.uuid}/')
 
             except:
                 reply_target = request.POST['reply_to']
@@ -28,7 +27,7 @@ def create_post(request):
                 reply = Post(post=post, echouser=echouser, reply_to=reply_to)
                 reply.save()
 
-                return redirect(request.POST['newpath'])
+                return redirect(f'/posts/{reply_to.uuid}/')
         
         except:
             new_post = Post(post=post, echouser=echouser)

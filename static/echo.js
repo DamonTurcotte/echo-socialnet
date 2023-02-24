@@ -306,7 +306,6 @@ $(document).on("click", ".post-reply", function () {
           <textarea class='post-reply-box' name="post" maxlength="280" placeholder='Write your reply here...' autocomplete="off" autofocus required></textarea>
           <input name="reply_to" type="hidden" value="${postID}">
           <input name="csrfmiddlewaretoken" type="hidden" value="${csrftoken}">
-          <input name="newpath" type="hidden" value="${window.location.href}">
           <input id='post-reply-submit' type='submit' value='Reply'>
         </form>
       `);
@@ -358,7 +357,6 @@ $(document).on("click", ".post-repost", function () {
             <textarea class='post-repost-box' name="post" maxlength="280" placeholder='What do you want to say?' autocomplete="off" autofocus required></textarea>
             <input name="repost_of" type="hidden" value="${postID}">
             <input name="csrfmiddlewaretoken" type="hidden" value="${csrftoken}">
-            <input name="newpath" type="hidden" value="${window.location.href}">
             <input id='post-repost-submit' type='submit' value='Repost'>
           </div>
         </form>
