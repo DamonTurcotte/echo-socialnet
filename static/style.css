@@ -1786,3 +1786,78 @@ aside {
 .alert-link {
   color: #ffe150dd;
 }
+
+
+
+
+/* Page Under Construction */
+.construction-container {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 260px;
+  background-color: #292929;
+  border-radius: 20px;
+  border: 1px outset #11111188;
+  font-size: 18px;
+  color: #efd150;
+  fill: #efd150;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.construction-icon {
+  height: 1.2em;
+  width: 1.2em;
+}
+
+.construction-text {
+  font-size: 1em;
+  margin: 0 10px;
+}
+
+/* Settings */
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #292929;
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.settings-signup,
+.settings-login,
+.settings-logout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 200px;
+  border-radius: 20px;
+  margin: 20px;
+}
+
+.settings-signup {
+  background-color: #20c147aa;
+  color: #e1e1e1;
+  border: 1px outset #20c147aa;
+}
+
+.settings-login {
+  background-color: #3d8effaa;
+  color: #e1e1e1;
+  border: 1px outset #3d8effaa;
+}
+
+.settings-logout {
+  background-color: #dc3545cc;
+  color: #e1e1e1;
+  border: 1px outset #dc3545cc;
+}
