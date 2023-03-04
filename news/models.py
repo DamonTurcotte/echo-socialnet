@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 
+app_name = 'news'
 
 class Articles(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4)
