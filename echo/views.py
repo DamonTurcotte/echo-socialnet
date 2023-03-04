@@ -9,7 +9,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 # Main page logic is contained in Echo.JS and Views.AJAX_response
 def index(request):
     context = {
-        'title': 'Home | Echo Social',
+        'title': 'Home | Echo',
     }
 
     return render(request, 'echo/index.html', context=context)
@@ -18,7 +18,6 @@ def index(request):
 @ensure_csrf_cookie
 def ajax_response(request):
     if request.method == 'GET':
-        print(request.GET)
 
         if request.GET['action'] == 'auth':
             if request.user.is_authenticated:
@@ -129,7 +128,6 @@ def ajax_response(request):
             
             if post.likes.filter(username=request.user).exists():
                 post.likes.remove(request.user)
-                print('Unliked')
                 data = {
                     'status': 'unliked',
                     'uuid': uuid
@@ -210,5 +208,5 @@ def under_construction(request):
     return render(request, 'echo/todo.html', context=context)
 
 def settings_view(request):
-    context = {'title': 'Settings | Echo Social'}
+    context = {'title': 'Settings | Echo'}
     return render(request, 'echo/settings.html', context=context)
