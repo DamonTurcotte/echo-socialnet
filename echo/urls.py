@@ -29,7 +29,7 @@ urlpatterns = [
     path('posts/', include('posts.urls')),
     path('chat/', include('chat.urls')),
     path('alerts/', include('notifications.urls')),
-    path('browse/', views.under_construction),
+    path('browse/', include('news.urls')),
     path('settings/', views.settings_view)
 ]
 
