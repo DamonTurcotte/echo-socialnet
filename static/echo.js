@@ -39,7 +39,6 @@ function interactive(method, url, action, instance) {
     },
     dataType: "json",
     success: function (data) {
-      console.log(data);
       if (data["status"] == "liked") {
         $(`#${data.uuid}`).find(".post-like").addClass("active");
         val = Number($(`#${data.uuid}`).find(".post-like-count").text()) + 1;
@@ -96,7 +95,6 @@ function searchEcho(instance, model, query, constraints = "default") {
     },
     dataType: "json",
     success: function (data) {
-      console.log(data);
       if (instance == "message") {
         $(".user-search-results").children().remove();
         if (data["users"] == "no results") {
