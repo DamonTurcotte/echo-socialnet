@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-from .models import Chat, PvtMessage
+from .models import Chat
 from users.models import EchoUser
 from .forms import CreatePvtMessageForm
 from chat.utils import message_list
