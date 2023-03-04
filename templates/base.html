@@ -39,14 +39,22 @@
         </div>
       </div>
 
-      <div class='auth-container'>
+      
 
         {% if user.is_authenticated %}
+        <div class='auth-container'>
           <a class="auth logout" href="{% url 'logout' %}?next={{request.path}}">
             <span>Log out</span>
           </a>
+        </div>
 
+        <a class="logout-btn" href="{% url 'logout' %}?next={{request.path}}">
+          <svg fill="#dc3545" width="35px" height="35px" viewBox="-102.4 -102.4 1228.80 1228.80" stroke="#dc3545" stroke-width="51.2" transform="rotate(0)">
+            <g stroke-linecap="round" stroke-linejoin="round"></g><g> <path d="M868 732h-70.3c-4.8 0-9.3 2.1-12.3 5.8-7 8.5-14.5 16.7-22.4 24.5a353.84 353.84 0 0 1-112.7 75.9A352.8 352.8 0 0 1 512.4 866c-47.9 0-94.3-9.4-137.9-27.8a353.84 353.84 0 0 1-112.7-75.9 353.28 353.28 0 0 1-76-112.5C167.3 606.2 158 559.9 158 512s9.4-94.2 27.8-137.8c17.8-42.1 43.4-80 76-112.5s70.5-58.1 112.7-75.9c43.6-18.4 90-27.8 137.9-27.8 47.9 0 94.3 9.3 137.9 27.8 42.2 17.8 80.1 43.4 112.7 75.9 7.9 7.9 15.3 16.1 22.4 24.5 3 3.7 7.6 5.8 12.3 5.8H868c6.3 0 10.2-7 6.7-12.3C798 160.5 663.8 81.6 511.3 82 271.7 82.6 79.6 277.1 82 516.4 84.4 751.9 276.2 942 512.4 942c152.1 0 285.7-78.8 362.3-197.7 3.4-5.3-.4-12.3-6.7-12.3zm88.9-226.3L815 393.7c-5.3-4.2-13-.4-13 6.3v76H488c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h314v76c0 6.7 7.8 10.5 13 6.3l141.9-112a8 8 0 0 0 0-12.6z"></path></g>
+          </svg>
+        </a>
         {% else %}
+        <div class='auth-container'>
           <a class="auth signup" href="{% url 'users:signup' %}">
             <span>Sign Up</span>
           </a>
@@ -54,9 +62,16 @@
           <a class='auth login' href="{% url 'login' %}">
             <span>Log In</span>
           </a>
+        </div>
+
+        <a class='login-btn' href="{% url 'login' %}">
+          <svg fill="#83f100" width="35px" height="35px" viewBox="-102.4 -102.4 1228.80 1228.80" stroke="#83f100" stroke-width="51.2">
+            <g stroke-linecap="round" stroke-linejoin="round"></g><g><path d="M521.7 82c-152.5-.4-286.7 78.5-363.4 197.7-3.4 5.3.4 12.3 6.7 12.3h70.3c4.8 0 9.3-2.1 12.3-5.8 7-8.5 14.5-16.7 22.4-24.5 32.6-32.5 70.5-58.1 112.7-75.9 43.6-18.4 90-27.8 137.9-27.8 47.9 0 94.3 9.3 137.9 27.8 42.2 17.8 80.1 43.4 112.7 75.9 32.6 32.5 58.1 70.4 76 112.5C865.7 417.8 875 464.1 875 512c0 47.9-9.4 94.2-27.8 137.8-17.8 42.1-43.4 80-76 112.5s-70.5 58.1-112.7 75.9A352.8 352.8 0 0 1 520.6 866c-47.9 0-94.3-9.4-137.9-27.8A353.84 353.84 0 0 1 270 762.3c-7.9-7.9-15.3-16.1-22.4-24.5-3-3.7-7.6-5.8-12.3-5.8H165c-6.3 0-10.2 7-6.7 12.3C234.9 863.2 368.5 942 520.6 942c236.2 0 428-190.1 430.4-425.6C953.4 277.1 761.3 82.6 521.7 82zM395.02 624v-76h-314c-4.4 0-8-3.6-8-8v-56c0-4.4 3.6-8 8-8h314v-76c0-6.7 7.8-10.5 13-6.3l141.9 112a8 8 0 0 1 0 12.6l-141.9 112c-5.2 4.1-13 .4-13-6.3z"></path></g>
+          </svg>
+        </a>
         {% endif %}
 
-      </div>
+      
     </div>
   </header>
 
@@ -125,8 +140,65 @@
     </section>
 
     <aside>
-      {% block misc %}
-      {% endblock %}
+      <div class="side">
+        <div class="side-container">
+          <span>New Users</span>
+        </div>
+
+        {% for user in new_users %}
+        <div class='side-user'>
+          <div class="side-avatar">
+            <img src="{{user.avatar.url}}">
+          </div>
+          <div class="side-username">{{user.username}}</div>
+        </div>
+        {% endfor %}
+
+        {% for article in side_articles %}
+        <div class="side-container">
+          <div class="news-container">
+            <a class="news-link" href="{{article.url}}">
+              <img class="news-img" src="{{article.image}}" alt="news article image">
+              <div class="news-content">
+                <div class="news-title">
+                  {{article.title}}
+                </div>
+                <div class="news-footer">
+                  <div class="news-source">{{article.source}}</div>
+                </div>
+              </div>
+            </a>
+
+            <div class="news-actions">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 30 576 432" width="24px" height="24px" fill="#444444">
+                <path d="M272 416c17.7 0 32-14.3 32-32s-14.3-32-32-32H160c-17.7 0-32-14.3-32-32V192h32c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-64-64c-12.5-12.5-32.8-12.5-45.3 0l-64 64c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8l32 0 0 128c0 53 43 96 96 96H272zM304 96c-17.7 0-32 14.3-32 32s14.3 32 32 32l112 0c17.7 0 32 14.3 32 32l0 128H416c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l64 64c12.5 12.5 32.8 12.5 45.3 0l64-64c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8l-32 0V192c0-53-43-96-96-96L304 96z"></path>
+              </svg>
+
+              <svg viewBox="0 0 24 24" height="24px" width="24px" fill="none" transform="matrix(1, 0, 0, 1, 0, 0)">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <g clip-path="url(#clip0_429_11106)">
+                    <path d="M12 21C16.9706 21 21 16.9705 21 12C21 7.02941 16.9706 2.99997 12 2.99997C7.02944 2.99997 3 7.02941 3 12C3 13.4876 3.36093 14.8909 4 16.1272L3 21L7.8728 20C9.10904 20.639 10.5124 21 12 21Z" stroke="#444444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <rect x="7.5" y="12" width="0.01" height="0.01" stroke="#444444" stroke-width="3.75" stroke-linejoin="round"></rect>
+                    <rect x="12" y="12" width="0.01" height="0.01" stroke="#444444" stroke-width="3.75" stroke-linejoin="round"></rect>
+                    <rect x="16.5" y="12" width="0.01" height="0.01" stroke="#444444" stroke-width="3.75" stroke-linejoin="round"></rect>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_429_11106">
+                      <rect width="24" height="24" fill="white"></rect> 
+                    </clipPath>
+                  </defs>
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+
+
+      </div>
     </aside>
   </main>
 
