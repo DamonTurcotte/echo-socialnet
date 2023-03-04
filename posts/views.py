@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import JsonResponse
 from .models import Post
-from django.views.generic import DetailView
 from echo.utils import make_post_objects
 
 
