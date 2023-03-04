@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="article-container">
+  <div class="article-card">
+    <div class="article-image">
+      <img src="{{article.image}}" alt="{{article.category | capfirst}} News Image">
+    </div>
+
+    <div class="article-info">
+      <div class="article-source">{{article.source}}</div>
+      <div class="article-date">{{article.date}}</div>
+    </div>
+
+    <div class="article-title">{{article.title}}</div>
+  </div>
+
+
+  <div class="article-description">{{article.description}}</div>
+  <div class="article-content">{{article.content}}</div>
+</div>
+
+{% endblock %}
