@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="browse-header-container">
+  <div class="browse-header">
+    <div class="browse-search-bar">
+      <input class="browse-search-input" type="search" name="" id="" placeholder="Search Echo for users and content...">
+      <input class="browse-search-button" type="button" value="Search">
+    </div>
+
+    <div class="browse-categories">
+
+      {% if articles.0.category == 'entertainment' %}
+      <a class="browse-world" href="/browse/world/"><div>World</div></a>
+      <a class="browse-entertainment active" href="/browse/entertainment/"><div>Entertainment</div></a>
+      <a class="browse-tech" href="/browse/tech/"><div>Tech</div></a>
+
+      {% elif articles.0.category == 'technology' %}
+      <a class="browse-world" href="/browse/world/"><div>World</div></a>
+      <a class="browse-entertainment" href="/browse/entertainment/"><div>Entertainment</div></a>
+      <a class="browse-tech active" href="/browse/tech/"><div>Tech</div></a>
+      
+      {% else %}
+      <a class="browse-world active" href="/browse/world/"><div>World</div></a>
+      <a class="browse-entertainment" href="/browse/entertainment/"><div>Entertainment</div></a>
+      <a class="browse-tech" href="/browse/tech/"><div>Tech</div></a>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<div class="browse-container">
+
+  {% for article in articles %}
+
+  <a class="browse-article" href="/browse/{{article.category}}/{{article.uuid}}/">
+    <div class="browse-article-title">{{article.title}}</div>
+    <div class="browse-article-source">{{article.source}}</div>
+  </a>
+
+  {% endfor %}
+
+</div>
+
+{% endblock %}
