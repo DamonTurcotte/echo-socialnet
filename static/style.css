@@ -597,6 +597,7 @@ aside {
   justify-content: space-around;
   align-items: center;
   border-radius: 20px;
+  margin: 10px;
 }
 
 .create-post-text {
@@ -639,7 +640,7 @@ aside {
 /* ------------------------- INDEX.HTML ------------------------- */
 
 .section-container {
-  padding: 10px;
+  padding: 15px 10px 0;
   display: flex;
   flex-wrap: wrap;
 }
@@ -2100,12 +2101,39 @@ aside {
 
 
 /* ARTICLE DETAIL VIEW */
+.article-section-container {
+  padding: 10px 10px 0;
+}
+
 .article-container {
   width: 100%;
-  padding: 10px;
+  padding: 5px 10px;
   font-size: 0.95em;
   background-color: #1f1f1f;
   border-radius: 10px;
+  box-shadow: 0 0 1px 1px #444444 inset;
+}
+
+.article-header {
+  display: flex;
+  margin: 5px 0 10px;
+}
+
+.article-return {
+  height: 30px;
+  width: 30px;
+  stroke: #a1a1a1;
+}
+
+.article-category {
+  font-size: 18px;
+  padding: 8px 20px 5px;
+  border-radius: 20px;
+  background-color: #333333;
+  color: #dfb700;
+  text-shadow: 0 0 1px #bfa700aa;
+  width: fit-content;
+  margin: 0 0 0 10px;
 }
 
 .article-card {
@@ -2139,4 +2167,210 @@ aside {
 .article-description,
 .article-content {
   margin: 10px 10px;
+}
+
+.article-title {
+  font-size: 1.2em;
+}
+
+.article-actions {
+  display: flex;
+  margin: 5px 10px 0;
+  width: 100%;
+  justify-content: right;
+}
+
+.article-comment,
+.article-share {
+  display: flex;
+  align-items: center;
+  color: #ffffcccc;
+  width: 100px;
+}
+
+.article-comment-icon,
+.article-share-icon {
+  width: 40px;
+  text-align: center;
+}
+
+.article-comment-icon {
+  stroke: #444444;
+}
+
+.article-comment-icon.active {
+  stroke: #ffe150;
+}
+
+.article-share-icon {
+  fill: #444444;
+}
+
+.article-comment-icon:hover > svg {
+  stroke: #ffe150;
+}
+
+.article-share-icon:hover > svg {
+  fill: #ffe150;
+}
+
+.article-comment-count,
+.article-share-count {
+  margin: 0 0 0 10px;
+}
+
+/* CREATEA ARTICLE COMMENT */
+.article-share-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: #00000055;
+  z-index: 10;
+}
+
+.article-share-container {
+  width: calc(1140px * 4/9);
+  padding: 15px;
+  background-color: #292929cc;
+  border-radius: 20px;
+  border: 1px solid #444444;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.article-share-write {
+  width: 100%;
+  height: 150px;
+  background-color: #333333;
+  resize: none;
+  border-radius: 10px;
+  color: #e1e1e1;
+  padding: 5px 10px;
+}
+
+.article-share-send {
+  margin: 15px 0 0 0;
+  height: 40px;
+  width: 96px;
+  border-radius: 10px;
+  background-color: #161616;
+  color: #4daeff;
+  border: 1px outset #4daeff;
+}
+
+.article-share-card {
+  display: flex;
+  margin: 0 0 10px;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #444444;
+}
+
+.article-share-detail {
+  margin: 0 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 1em;
+}
+
+.article-share-image {
+  width: 175px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.article-share-title {
+  height: 4em;
+  overflow: hidden;
+}
+
+.article-share-source {
+  overflow: hidden;
+  color: #40c157;
+  height: 1em;
+}
+
+/* ARTICLE COMMENT BOX */
+.article-comment-form {
+  width: 100%;
+}
+
+.article-comment-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #1f1f1f;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0 0;
+  box-shadow: 0 0 1px 1px #444444 inset;
+}
+
+.article-comment-write {
+  width: 100%;
+  height: 80px;
+  border-radius: 10px;
+  resize: none;
+  background-color: #333333;
+  color: #e1e1e1;
+  padding: 5px 10px;
+}
+
+.article-comment-submit {
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #161616;
+  color: #efd150;
+  border: 1px outset #efd150;
+  margin: 10px 0 0 0;
+}
+
+.article-comment-none {
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #1f1f1f;
+  border-radius: 20px;
+  padding: 20px;
+  color: #e1e1e1;
+  box-shadow: 0 0 1px 1px #444444 inset;
+  font-size: 14px;
+}
+
+@media(max-width: 575.98px) {
+  .article-section-container {
+    padding: 0;
+  }
+
+  .article-container {
+    border-radius: 0 0 10px 10px;
+  }
+}
+
+@media(max-width: 375px) {
+  .article-share-card {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15px;
+
+  }
+
+  .article-share-detail {
+    margin: 5px 0 0 0;
+    width: 175px;
+  }
 }
