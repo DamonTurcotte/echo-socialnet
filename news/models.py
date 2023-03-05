@@ -16,7 +16,7 @@ class Articles(models.Model):
     when_added = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.title[:40]}... | {self.date}'
+        return f'{self.title[:120]}...'
     
 class LastNewsUpdate(models.Model):
     time = models.DateTimeField()
