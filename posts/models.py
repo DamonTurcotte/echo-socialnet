@@ -17,6 +17,8 @@ class Post(models.Model):
     likes = models.ManyToManyField('users.EchoUser', related_name='liked')
     reply_to = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
     repost_of = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, blank=True, related_name='reposts')
+    article_comment = models.ForeignKey('news.Articles', on_delete=models.CASCADE, null=True, blank=True, related_name='article_comments')
+    article_share = models.ForeignKey('news.Articles', on_delete=models.CASCADE, null=True, blank=True, related_name='article_shares')
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
