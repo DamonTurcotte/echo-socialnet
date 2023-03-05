@@ -157,7 +157,6 @@ function renderPosts(data) {
     let repostUser = post["repost_user"];
     let repostPost = post["repost_post"];
     let repostTime = post["repost_time"];
-    let repost;
 
     if (object == "reply") {
       replyToName = `<div class="post-reply-to">Reply<span>@</span>${post["reply_to_name"]}</div>`;
@@ -733,4 +732,79 @@ $(document).on("click", ".message-send", function () {
       $(".message-dialogue-container").scrollTop($(".message-dialogue").height());
       $(".message-write-input").val('');
     })
+});
+
+/* click() -> GENERATE ARTICLE COMMENT FORM */
+$(document).on("click", ".article-comment-icon", function () {
+  if (currentUserStatus() == "user") {
+    if ($(".article-comment-form").length) {
+      $(".article-comment-icon").removeClass("active")
+      $(".article-comment-form").remove()
+    } else {
+      $(".article-comment-icon").addClass("active")
+      $(".post-reply-form").each(function (index, element) {
+        $(element).remove();
+      });
+      $(".post-repost-form").each(function (index, element) {
+        $(element).remove();
+      });
+      $(".article-container").after(`
+        <form action="${location.pathname}" method="post" class="article-comment-form">
+          <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
+          <input type="hidden" name="type" value="comment">
+          <div class="article-comment-container">
+            <textarea name="post" class="article-comment-write"></textarea>
+            <input type="submit" value="Comment" class="article-comment-submit">
+          </div>
+        </form>
+      `);
+    }
+  } else {
+    window.location.pathname = "/accounts/login/";
+  }
+})
+
+/* click() -> GENERATE ARTICLE SHARE FORM */
+$(document).on("click", ".article-share-icon", function () {
+  if (currentUserStatus() == "user") {
+    $(".post-reply-form").each(function (index, element) {
+      $(element).remove();
+    });
+    $(".post-repost-form").each(function (index, element) {
+      $(element).remove();
+    });
+    $(".article-comment-form").remove()
+    $(".article-comment-icon").removeClass("active")
+    $("section").append(`
+      <form class="article-share-form" method="post" action="${location.pathname}">
+        <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
+        <input type="hidden" name="type" value="share">
+        <div class="article-share-container">
+          <div class="article-share-card">
+            <img class="article-share-image" src="${$(".article-image > img").attr("src")}" alt="Article Image"/>
+            <div class="article-share-detail">
+              <div class="article-share-title">${$(".article-title").text()}</div>
+              <div class="article-share-source">${$(".article-source").text()}</div>
+            </div>
+          </div>
+
+          <textarea class="article-share-write" name="post" maxlength="280" placeholder="Write your message here.."></textarea>
+          <input type="submit" value="Share" class="article-share-send">
+        </div>
+      </form>
+    `);
+  } else {
+    window.location.pathname = "/accounts/login/";
+  }
+})
+
+/* REMOVE ARTICLE SHARE BOX IF CLICK OUTSIDE */
+$(document).on("click", ".article-share-form", function (event) {
+  var $target = $(event.target);
+  if (
+    !$target.closest(".article-share-container").length &&
+    $(".article-share-form").is(":visible")
+  ) {
+    $(".article-share-form").remove();
+  }
 });
