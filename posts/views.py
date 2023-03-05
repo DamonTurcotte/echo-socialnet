@@ -3,14 +3,15 @@ from django.urls import reverse
 from django.http import JsonResponse
 from .models import Post
 from echo.utils import make_post_objects
+from django.contrib.auth.decorators import login_required
 
 
-
+@login_required
 def create_post(request):
     if request.method == 'POST':
         post = request.POST['post']
         echouser = request.user
-
+        
         try:
             try:
                 repost_target = request.POST['repost_of']
