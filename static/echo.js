@@ -158,10 +158,37 @@ function renderPosts(data) {
     let repostPost = post["repost_post"];
     let repostTime = post["repost_time"];
 
+    let articleTitle = post["article_title"];
+    let articleSource = post["article_source"];
+    let articleID = post["article_id"];
+    let articleCategory = post["article_category"];
+    let articleImage = post["article_image"];
+    let articleCard;
+
+    console.log(articleTitle)
+
     if (object == "reply") {
       replyToName = `<div class="post-reply-to">Reply<span>@</span>${post["reply_to_name"]}</div>`;
     } else {
       replyToName = "";
+    }
+
+    if (object == "share") {
+      articleCard = `
+      <div class="post-article-card">
+        <a class="post-article-link" href="/browse/${articleCategory}/${articleID}/">
+          <img class="post-article-image" src="${articleImage}" alt="news article image">
+          <div class="post-article-content">
+            <div class="post-article-title">${articleTitle}</div>
+            <div class="post-article-footer">
+              <div class="post-article-source">${articleSource}</div>
+            </div>
+          </div>
+        </a>
+      </div>
+      `
+    } else {
+      articleCard = ''
     }
 
     if (data["status"] == "replies_retrieved") {
@@ -231,6 +258,7 @@ function renderPosts(data) {
                 <div class='post-content'>
                   <p>${content}</p>
                 </div>
+                ${articleCard}
               </div>
 
               <form class='post-actions-form'>
@@ -808,3 +836,12 @@ $(document).on("click", ".article-share-form", function (event) {
     $(".article-share-form").remove();
   }
 });
+
+/* CALCULATE SIDEBAR STICKY SCROLL */
+if ($(".side").height() > ($(window).height() - 60)) {
+  $(".side").css("top", (`${
+    $(".side").height() - $(window).height() + 40
+  }px`))
+} else {
+  $(".side").css("top", "60px")
+}
