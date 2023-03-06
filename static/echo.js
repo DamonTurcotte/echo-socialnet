@@ -803,24 +803,12 @@ $(document).on("click", ".article-share-icon", function () {
     });
     $(".article-comment-form").remove()
     $(".article-comment-icon").removeClass("active")
-    $("section").append(`
-      <form class="article-share-form" method="post" action="${location.pathname}">
-        <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
-        <input type="hidden" name="type" value="share">
-        <div class="article-share-container">
-          <div class="article-share-card">
-            <img class="article-share-image" src="${$.find(".article-image > img")[0].src}" alt="Article Image"/>
-            <div class="article-share-detail">
-              <div class="article-share-title">${$.find(".article-title")[0].innerText}</div>
-              <div class="article-share-source">${$.find(".article-source")[0].innerText}</div>
-            </div>
-          </div>
+    let title = $.find(".article-title")[0].innerText;
+    let source = $.find(".article-source")[0].innerText;
+    let path = location.pathname
+    let image = $.find(".article-image > img")[0].src
 
-          <textarea class="article-share-write" name="post" maxlength="280" placeholder="Write your message here.."></textarea>
-          <input type="submit" value="Share" class="article-share-send">
-        </div>
-      </form>
-    `);
+    $("section").append(`<form class="article-share-form" method="post" action="${path}"><input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}"><input type="hidden" name="type" value="share"><div class="article-share-container"><div class="article-share-card"><img class="article-share-image" src="${image}" alt="Article Image"/><div class="article-share-detail"><div class="article-share-title">${title}</div><div class="article-share-source">${source}</div></div></div><textarea class="article-share-write" name="post" maxlength="280" placeholder="Write your message here.."></textarea><input type="submit" value="Share" class="article-share-send"></div></form>`);
   } else {
     window.location.pathname = "/accounts/login/";
   }
