@@ -822,8 +822,8 @@ $(document).on("click", ".article-share-icon", function () {
       </form>
     `);
     $(".article-share-form").attr("action", location.pathname)
-    $(".article-share-title").append($(".article-title").text());
-    $(".article-share-source").append($(".article-source").text());
+    $(".article-share-title").text($(".article-title").text());
+    $(".article-share-source").text($(".article-source").text());
     $(".article-share-image").attr("src", $(".article-image > img").attr("src"));
   } else {
     window.location.pathname = "/accounts/login/";
