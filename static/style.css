@@ -705,7 +705,7 @@ aside {
 
 .post-actions {
   width: 100%;
-  margin: 10px 0 0 7%;
+  margin: 10px 0 0 10%;
   display: flex;
   cursor: pointer;
 }
@@ -713,7 +713,7 @@ aside {
 .post-reply,
 .post-repost,
 .post-like {
-  width: 16.5%;
+  width: 16%;
   display: flex;
   justify-content: center;
   fill: #ffe15085;
@@ -1883,7 +1883,6 @@ aside {
   align-items: center;
   position: sticky;
   width: calc(1140px * 3/9);
-  height: calc(100vh - 60px);
   padding: 10px 20px;
 }
 
@@ -1976,14 +1975,6 @@ aside {
   color: #40e167aa;
   height: 14px;
   overflow: hidden;
-}
-
-.news-actions {
-  display: flex;
-  flex-direction: column;
-  height: 100px;
-  justify-content: space-around;
-  margin-left: 10px;
 }
 
 @media(max-width: 1199.98px) {
@@ -2373,4 +2364,58 @@ aside {
     margin: 5px 0 0 0;
     width: 175px;
   }
+}
+
+/* POST ARTICLE SHARE CARD */
+.post-article-card {
+  display: flex;
+  font-family: 'coda';
+  font-size: 14px;
+  padding: 5px 10px;
+  width: 100%;
+  background-color: #444444;
+  border-radius: 20px;
+  margin: 10px 0 0;
+}
+
+.post-article-link {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  color: #e1e1e1;
+}
+
+.post-article-image {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.post-article-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 5px;
+  padding: 3px 0;
+  width: 100%;
+}
+
+.post-article-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: baseline;
+}
+
+.post-article-title {
+  height: 100%;
+  overflow: hidden;
+  height: 70px;
+}
+
+.post-article-source {
+  color: #40e167aa;
+  height: 14px;
+  overflow: hidden;
 }
