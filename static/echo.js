@@ -809,10 +809,10 @@ $(document).on("click", ".article-share-icon", function () {
         <input type="hidden" name="type" value="share">
         <div class="article-share-container">
           <div class="article-share-card">
-            <img class="article-share-image" src="${$(".article-image > img").attr("src")}" alt="Article Image"/>
+            <img class="article-share-image" src="${$.find(".article-image > img")[0].src}" alt="Article Image"/>
             <div class="article-share-detail">
-              <div class="article-share-title">${$(".article-title").text()}</div>
-              <div class="article-share-source">${$(".article-source").text()}</div>
+              <div class="article-share-title">${$.find(".article-title")[0].innerText}</div>
+              <div class="article-share-source">${$.find(".article-source")[0].innerText}</div>
             </div>
           </div>
 
