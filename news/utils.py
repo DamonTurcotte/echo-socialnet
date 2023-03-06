@@ -73,7 +73,7 @@ def retrieve_articles():
 
     articles_to_render = []
     i = 0
-    while i < 3:
+    while i < 5:
         try:
             rand_article = random.choice(article_list)
             articles_to_render.append(rand_article)
