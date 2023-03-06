@@ -87,7 +87,12 @@ def ajax_response(request):
                 'repost_avatar',
                 'repost_user',
                 'repost_time',
-                'repost_post'
+                'repost_post',
+                'article_title',
+                'article_source',
+                'article_category',
+                'article_id',
+                'article_image'
                 ]
             
             for field in alt_post_fields:
@@ -107,6 +112,16 @@ def ajax_response(request):
                 post_view['repost_time'] = post.repost_of.when_posted()#type:ignore
                 post_view['repost_post'] = post.repost_of.post#type:ignore
                 post_view['object'] = 'repost'
+            except:
+                pass
+
+            try:
+                post_view['article_category'] = post.article_share.category#type:ignore
+                post_view['article_id'] = post.article_share.uuid#type:ignore
+                post_view['article_title'] = post.article_share.title#type:ignore
+                post_view['article_source'] = post.article_share.source#type:ignore
+                post_view['article_image'] = post.article_share.image#type:ignore
+                post_view['object'] = 'share'
             except:
                 pass
 
@@ -203,6 +218,7 @@ def search_response(request):
 
     return render(request, '404.html')
 
+# simple placeholder page for future content
 def under_construction(request):
     context = {'title': 'Under Construction | Echo Social'}
     return render(request, 'echo/todo.html', context=context)
