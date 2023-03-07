@@ -14,25 +14,29 @@
 
   <div class="chat-list">
 
-      {% for chat in chats %}
-      <a class="chat-instance" onclick="location.href='/chat/{{chat.uuid}}'">
+    {% for chat in chats %}
+    <a class="chat-instance" onclick="location.href='/chat/{{chat.uuid}}'">
 
-        <img class="chat-avatar" src="{{chat.user.avatar.url}}">
+      <img class="chat-avatar" src="{{chat.user.avatar.url}}">
 
-        <div class="chat-details">
-          <div class="chat-user">
-            <div class="chat-user-username">{{chat.user.username}}</div>
-            <div class="chat-user-timestamp">{{chat.timestamp}}</div>
-          </div>
-
-          <div class="chat-preview-message">{{chat.last_message}}</div>
+      <div class="chat-details">
+        <div class="chat-user">
+          <div class="chat-user-username">{{chat.user.username}}</div>
+          <div class="chat-user-timestamp">{{chat.timestamp}}</div>
         </div>
 
-      </a>
-      {% endfor %}
+        <div class="chat-preview-message">{{chat.last_message}}</div>
+      </div>
 
+    </a>
+    {% endfor %}
   </div>
-
+  {% if not chats %}
+  <div class="chat-none">
+    <p>You have no open private chats</p>
+    <p>Begin typing a name in the search bar above to start a chat</p>
+  </div>
+  {% endif %}
 </div>
 
 {% endblock %}
