@@ -23,7 +23,8 @@ def ajax_response(request):
             if request.user.is_authenticated:
                 return JsonResponse({
                     'status': 'user',
-                    'user': request.user.username
+                    'user': request.user.username,
+                    'uuid': request.user.uuid
                     })
 
             else:
@@ -35,19 +36,36 @@ def ajax_response(request):
         posts = Post.objects.order_by('timestamp').reverse().all()
         echouser = request.user
         post_list = list()
+        total = 0
+
         data = {
             'post_list': post_list,
-            'status': 'posts_retrieved'
+            'status': 'posts_retrieved',
+            'total': total
         }
 
         if request.GET['action'] == 'get_feed_posts':
             posts = Post.objects.order_by('timestamp').reverse().filter(reply_to=None).all()
+            data['total'] = len(posts)
+            page = int(request.GET['page'])
+            limit = int(request.GET['limit'])
+            start = page * limit - limit
+            end = page * limit
+            posts = posts[start:end]
+            
 
         if request.GET['action'] == 'get_profile_replies':
             echouser = EchoUser.objects.get(username=request.GET['instance'])
             posts = Post.objects.order_by('timestamp').reverse().filter(
                 echouser=echouser.id).all()
             posts = posts.exclude(reply_to=None)
+            
+            data['total'] = len(posts)
+            page = int(request.GET['page'])
+            limit = int(request.GET['limit'])
+            start = page * limit - limit
+            end = page * limit
+            posts = posts[start:end]
 
         if request.GET['action'] == 'get_profile_posts':
             echouser = EchoUser.objects.get(username=request.GET['instance'])
@@ -55,17 +73,32 @@ def ajax_response(request):
                 echouser=echouser.id).all()
             posts = posts.filter(reply_to=None)
 
+            data['total'] = len(posts)
+            page = int(request.GET['page'])
+            limit = int(request.GET['limit'])
+            start = page * limit - limit
+            end = page * limit
+            posts = posts[start:end]
+
         if request.GET['action'] == 'get_profile_likes':
             echouser = EchoUser.objects.get(username=request.GET['instance'])
             posts = Post.objects.order_by('timestamp').reverse().filter(
                 echouser=echouser.id).all()
             posts = echouser.liked.order_by('timestamp').reverse().all()  # type:ignore
 
+            data['total'] = len(posts)
+            page = int(request.GET['page'])
+            limit = int(request.GET['limit'])
+            start = page * limit - limit
+            end = page * limit
+            posts = posts[start:end]
+
         if request.GET['action'] == 'get_post_replies':
             post_uuid = request.GET['instance']
             posts = Post.objects.get(uuid=post_uuid)
             posts = posts.replies.all()  # type:ignore
             data['status'] = 'replies_retrieved'
+            total = len(posts)
 
         for post in posts:
             post_view = dict()

@@ -9,6 +9,10 @@ function currentUser() {
   return currentUserRetrieve.responseJSON.user;
 }
 
+function currentUserID() {
+  return currentUserRetrieve.responseJSON.uuid;
+}
+
 // GENERATE CSRF TOKEN //
 function getCookie(name) {
   let cookieValue = null;
@@ -27,8 +31,12 @@ function getCookie(name) {
 
 const csrftoken = getCookie("csrftoken");
 
+let post_page = 1;
+let post_limit = 30;
+let post_total;
+
 // Ajax Function Template & On-Success Responses //
-function interactive(method, url, action, instance) {
+function interactive(method, url, action, instance, page = post_page, limit = post_limit) {
   $.ajax({
     type: method,
     url: url,
@@ -36,6 +44,8 @@ function interactive(method, url, action, instance) {
       csrfmiddlewaretoken: csrftoken,
       instance: instance,
       action: action,
+      page: page,
+      limit: limit
     },
     dataType: "json",
     success: function (data) {
@@ -54,7 +64,7 @@ function interactive(method, url, action, instance) {
         }
       }
       if (data["status"] == "posts_retrieved") {
-        removePosts();
+        post_total = data['total'];
         renderPosts(data);
       }
       if (data["status"] == "post_retrieved") {
@@ -481,6 +491,14 @@ if (String(location.pathname) == "/") {
     instance = "guest";
   }
   interactive(method, url, action, instance);
+
+  $(document).on("scroll", function () {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 30 && post_page * post_limit < post_total) {
+      post_page++;
+      interactive(method, url, action, instance)
+    }
+  });
 }
 
 // GET POST DETAIL //
@@ -498,6 +516,7 @@ if (
 
 // GET PROFILE TABS & POSTS //
 if (String(location.pathname).split("/")[2] == "profile") {
+  post_page = 1;
   let method = "GET";
   let url = "/ajax/";
   let action = "get_profile_posts";
@@ -507,9 +526,19 @@ if (String(location.pathname).split("/")[2] == "profile") {
   $(".profile-replies").removeClass("active");
   $(".profile-likes").removeClass("active");
   $(".profile-posts").addClass("active");
+
+  $(document).on("scroll", function () {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 30 && post_page * post_limit < post_total) {
+      post_page++;
+      interactive(method, url, action, instance)
+    }
+  });
 }
 
 $(document).on("click", ".profile-posts", function () {
+  removePosts();
+  post_page = 1;
   let method = "GET";
   let url = "/ajax/";
   let action = "get_profile_posts";
@@ -519,9 +548,19 @@ $(document).on("click", ".profile-posts", function () {
   $(".profile-replies").removeClass("active");
   $(".profile-likes").removeClass("active");
   $(".profile-posts").addClass("active");
+
+  $(document).on("scroll", function () {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 30 && post_page * post_limit < post_total) {
+      post_page++;
+      interactive(method, url, action, instance)
+    }
+  });
 });
 
 $(document).on("click", ".profile-replies", function () {
+  removePosts();
+  post_page = 1;
   let method = "GET";
   let url = "/ajax/";
   let action = "get_profile_replies";
@@ -531,9 +570,19 @@ $(document).on("click", ".profile-replies", function () {
   $(".profile-replies").removeClass("active");
   $(".profile-likes").removeClass("active");
   $(".profile-replies").addClass("active");
+
+  $(document).on("scroll", function () {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 30 && post_page * post_limit < post_total) {
+      post_page++;
+      interactive(method, url, action, instance)
+    }
+  });
 });
 
 $(document).on("click", ".profile-likes", function () {
+  removePosts();
+  post_page = 1;
   let method = "GET";
   let url = "/ajax/";
   let action = "get_profile_likes";
@@ -543,6 +592,14 @@ $(document).on("click", ".profile-likes", function () {
   $(".profile-replies").removeClass("active");
   $(".profile-likes").removeClass("active");
   $(".profile-likes").addClass("active");
+
+  $(document).on("scroll", function () {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 30 && post_page * post_limit < post_total) {
+      post_page++;
+      interactive(method, url, action, instance)
+    }
+  });
 });
 
 /* CROP AVATAR */
@@ -878,3 +935,6 @@ if ($(".side").height() > ($(window).height() - 60)) {
 } else {
   $(".side").css("top", "60px")
 }
+
+
+/* INFINITE SCROLL IN MAIN FEED */ 
