@@ -13,6 +13,7 @@ class Post(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4)
     echouser = models.ForeignKey('users.EchoUser', on_delete=models.CASCADE)
     post = models.TextField(max_length=280)
+    image = models.ImageField(upload_to="posts/", null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField('users.EchoUser', related_name='liked')
     reply_to = models.ForeignKey('Post', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
