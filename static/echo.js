@@ -186,8 +186,6 @@ function renderPosts(data) {
     let articleImage = post["article_image"];
     let articleCard;
 
-    console.log(articleTitle)
-
     if (object == "reply") {
       replyToName = `<div class="post-reply-to">Reply<span>@</span>${post["reply_to_name"]}</div>`;
     } else {
