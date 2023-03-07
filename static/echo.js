@@ -76,6 +76,17 @@ function interactive(method, url, action, instance) {
         val = Number($(".profile-followers-count").text());
         $(".profile-followers-count").text(val - 1);
       }
+      if (location.pathname.split("/").length >= 3) {
+        if (location.pathname.split("/")[2] == 'profile') {
+          $(".profile-posts-none").remove();
+          if (!$(".post-container").length) {
+            let postType = $(".profile-container.c > .active").attr("class").split(" ")[0].split("-")[1]
+            $(".section-container.profile").after(`
+              <div class="profile-posts-none">No ${postType} found</div>
+            `)
+          } 
+        }
+      }
     },
     failure: function () {
       console.log("failure");
@@ -367,10 +378,12 @@ $(document).on("click", ".post-repost", function () {
     let repostAvatar = $(this)
       .closest(".post-container")
       .find(".post-avatar")
+      .first()
       .clone();
     let repostContent = $(this)
       .closest(".post-container")
       .find(".post-body")
+      .first()
       .clone();
     postID = $(this).closest(".post-actions")[0].id;
     $(this).closest("form").after(`
@@ -490,6 +503,10 @@ if (String(location.pathname).split("/")[2] == "profile") {
   let action = "get_profile_posts";
   let instance = $(".profile-username").text();
   interactive(method, url, action, instance);
+  $(".profile-posts").removeClass("active");
+  $(".profile-replies").removeClass("active");
+  $(".profile-likes").removeClass("active");
+  $(".profile-posts").addClass("active");
 }
 
 $(document).on("click", ".profile-posts", function () {
@@ -498,6 +515,10 @@ $(document).on("click", ".profile-posts", function () {
   let action = "get_profile_posts";
   let instance = $(".profile-username").text();
   interactive(method, url, action, instance);
+  $(".profile-posts").removeClass("active");
+  $(".profile-replies").removeClass("active");
+  $(".profile-likes").removeClass("active");
+  $(".profile-posts").addClass("active");
 });
 
 $(document).on("click", ".profile-replies", function () {
@@ -506,6 +527,10 @@ $(document).on("click", ".profile-replies", function () {
   let action = "get_profile_replies";
   let instance = $(".profile-username").text();
   interactive(method, url, action, instance);
+  $(".profile-posts").removeClass("active");
+  $(".profile-replies").removeClass("active");
+  $(".profile-likes").removeClass("active");
+  $(".profile-replies").addClass("active");
 });
 
 $(document).on("click", ".profile-likes", function () {
@@ -514,6 +539,10 @@ $(document).on("click", ".profile-likes", function () {
   let action = "get_profile_likes";
   let instance = $(".profile-username").text();
   interactive(method, url, action, instance);
+  $(".profile-posts").removeClass("active");
+  $(".profile-replies").removeClass("active");
+  $(".profile-likes").removeClass("active");
+  $(".profile-likes").addClass("active");
 });
 
 /* CROP AVATAR */
