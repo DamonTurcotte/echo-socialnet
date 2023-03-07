@@ -3,6 +3,8 @@
 
 <div class='login-container'>
   <form class="login-form" action="{% url 'users:signup' %}" method="post" enctype="multipart/form-data">
+    <div class="login-header">Echo Account Registration</div>
+
     {% csrf_token %}
 
     <input class="login-username" type="text" id="username" name="username" maxlength="50" placeholder="Username" required>
