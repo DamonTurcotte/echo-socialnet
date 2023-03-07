@@ -675,6 +675,10 @@ aside {
   flex-wrap: wrap;
 }
 
+.section-container:last-of-type {
+  padding: 15px 10px 15px;
+}
+
 .post-container {
   background-color: #1f1f1f;
   border-radius: 15px;
