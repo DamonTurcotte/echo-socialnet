@@ -111,7 +111,7 @@ function searchEcho(instance, model, query, constraints = "default") {
     data: {
       csrfmiddlewaretoken: csrftoken,
       model: model,
-      query: query,
+      q: query,
       constraints: constraints
     },
     dataType: "json",
@@ -139,7 +139,6 @@ function searchEcho(instance, model, query, constraints = "default") {
     },
   });
 }
-
 
 // Remove Rendered Posts //
 function removePosts() {
@@ -778,6 +777,82 @@ $(document).on("input", ".chat-user-search", function () {
   }
 })
 
+/* BROWSE SEARCH BAR */
+$(document).on("input", ".browse-search-input", function () {
+  if (!$(".browse-search-suggest").length) {
+    $(".browse-search-bar").append(`
+      <div class='browse-search-suggest' style="top: ${
+        $(".browse-search-input").offset().top - $(".browse-search-input").height()
+      }px">
+      </div>
+    `);
+  }
+  if ($(".browse-search-input").val().length == 0) {
+    $(".browse-search-suggest").remove();
+  } else {
+    query = $(this).val();
+
+    $.get("/browse/search/", { "q": query, csrfmiddlewaretoken: csrftoken })
+      .done(function (data) {
+        console.log(data);
+
+        $(".browse-search-suggest").children().remove();
+        if (!data.users.length && !data.posts.length && !data.articles.length) {
+          $(".browse-search-suggest").append(`
+            <div class="null-result">No users or content query</div>
+          `);
+        } else {
+          if (data.users.length) {
+            $(".browse-search-suggest").append(`<div class="browse-search-type">Users</div>`);
+            for (let user of data["users"]) {
+              $(".browse-search-suggest").append(`
+                <div class="browse-search-result" onclick="location.pathname='/users/profile/${user.uuid}/'">
+                  <div class="user-search-avatar"><img src="${user.avatar}" /></div>
+                  <div class="user-search-username">${user.username}</div>
+                </div>
+              `);
+            }
+          }
+          if (data.posts.length) {
+            $(".browse-search-suggest").append(`<div class="browse-search-type">Posts</div>`);
+            for (let post of data.posts) {
+              $(".browse-search-suggest").append(`
+                <div class="browse-search-result" onclick="location.pathname='/posts/${post.uuid}/'">
+                  <div class=""post-search-object>
+                    <div class="post-search-user">
+                      <div class="post-search-avatar"><img src="${post.avatar}" /></div>
+                      <div class="post-search-username">${post.username}</div>
+                    </div>
+
+                    <div class="post-search-content">${post.content}</div>
+                  </div>
+                </div>
+              `);
+            }
+          }
+          if (data.articles.length) {
+            $(".browse-search-suggest").append(`<div class="browse-search-type">Articles</div>`)
+            for (let article of data.articles) {
+              let title = article.title
+              let source = article.source
+              if (title.length > 40) { title = title + "..." };
+              if (source.length > 30) { source =  source + "..." }
+              $(".browse-search-suggest").append(`
+                <div class="browse-search-result" onclick="location.pathname='/browse/${article.category}/${article.uuid}/'">
+                  <div class="article-search-box">
+                    <div class="article-search-title">${title}</div>
+                    <div class="article-search-source">${source}</div>
+                  </div>
+                </div>
+              `);
+            }
+          }
+        }
+        /* */
+      })
+  }
+})
+
 /* click() => close search results if click outside */
 if (location.pathname.split("/")[1] == "chat") {
   $(document).on("click", function (e) {
@@ -933,6 +1008,3 @@ if ($(".side").height() > ($(window).height() - 60)) {
 } else {
   $(".side").css("top", "60px")
 }
-
-
-/* INFINITE SCROLL IN MAIN FEED */ 
