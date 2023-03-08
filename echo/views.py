@@ -215,8 +215,10 @@ def ajax_response(request):
 
 
 def search_response(request):
+    query = request.GET.get('q')
+
     if request.GET['model'] == 'users':
-        query = request.GET['query']
+        
         if query:
             user_list = []
             names = []
