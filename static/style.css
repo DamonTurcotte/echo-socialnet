@@ -666,7 +666,6 @@ aside {
   }
 }
 
-
 /* ------------------------- INDEX.HTML ------------------------- */
 
 .section-container {
@@ -2103,7 +2102,8 @@ aside {
 
 .browse-search-bar {
   display: flex;
-  width: 90%;
+  justify-content: center;
+  width: 85%;
   margin: 10px 0 0 0;
 }
 
@@ -2111,6 +2111,7 @@ aside {
   flex-grow: 1;
   border-radius: 20px;
   flex-basis: 100px;
+  height: 30px;
   background-color: #1c1c1c;
   border: 1px inset #1c1c1c;
   padding: 0 10px;
@@ -2509,4 +2510,70 @@ aside {
   color: #40e167aa;
   height: 14px;
   overflow: hidden;
+}
+
+/* BROWSE >> SEARCH */
+.browse-search-suggest {
+  position: absolute;
+  background-color: #000000dd;
+  width: inherit;
+  border-radius: 20px;
+}
+
+.browse-search-type {
+  color: #fff9b0aa;
+  background-color: #40c15733;
+  padding: 5px 20px;
+  border-radius: 20px;
+}
+
+.browse-search-result {
+  display: flex;
+  align-items: center;
+  border-radius: 50px;
+}
+
+.browse-search-result:hover {
+  cursor: pointer;
+  background-color: #333333bb;
+}
+
+.post-search-avatar {
+  width: 40px;
+  height: 40px;
+  margin: 5px 10px 0 20px;
+}
+
+.post-search-avatar > img {
+  width: inherit;
+  height: inherit;
+}
+
+.post-search-user {
+  display: flex;
+  align-items: center;
+  color: #ffe15099;
+}
+
+.post-search-avatar {
+  height: 25px;
+  width: 25px;
+}
+
+.post-search-avatar > img {
+  border-radius: 50%;
+}
+
+.post-search-content {
+  margin: 5px 0 5px 50px;
+  color: #e1e1e1aa;
+}
+
+.article-search-box {
+  padding: 10px 20px;
+}
+
+.article-search-source {
+  margin: 5px 0 0 0;
+  color: #20c147aa
 }
