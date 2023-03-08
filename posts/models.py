@@ -1,5 +1,4 @@
 from django.db import models
-from django.utils import timezone
 import math
 import uuid
 from echo.utils import time_between
