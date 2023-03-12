@@ -2,8 +2,8 @@
 {% block content %}
 <div class="browse-header-container">
   <div class="browse-header">
-    <form class="browse-search-bar">
-      <input class="browse-search-input" type="search" name="q" placeholder="Search Echo for users and content...">
+    <form class="browse-search-bar" action="/browse/search/posts/">
+      <input class="browse-search-input" type="search" name="q" autocomplete="off" placeholder="Search Echo for users and content...">
     </form>
 
     <div class="browse-categories">
@@ -32,10 +32,18 @@
 
   {% for article in articles %}
 
-  <a class="browse-article" href="/browse/{{article.category}}/{{article.uuid}}/">
-    <div class="browse-article-title">{{article.title}}</div>
-    <div class="browse-article-source">{{article.source}}</div>
-  </a>
+    <div class="section-container">
+      <a class="search-article" href="/browse/{{article.category}}/{{article.uuid}}">
+        <div class="search-article-image">
+          <img src="{{article.image}}" alt="news article image" />
+        </div>
+
+        <div class="search-article-text">
+          <div class="search-article-title">{{article.title}}</div>
+          <div class="search-article-source">{{article.source}}</div>
+        </div>
+      </a>
+    </div>
 
   {% endfor %}
 
