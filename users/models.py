@@ -27,7 +27,7 @@ class EchoUser(AbstractUser):
         return self.followers.count()#type:ignore
 
     def num_following(self):
-        return self.following.count#type:ignore
+        return self.following.count()#type:ignore
 
     
 class Follow(models.Model):
