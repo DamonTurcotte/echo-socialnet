@@ -18,5 +18,11 @@ class Articles(models.Model):
     def __str__(self):
         return f'{self.title[:120]}...'
     
+    def title_trunc(self):
+        if len(self.title) <= 50:
+            return str(self.title)
+        else:
+            return f'{self.title[:50]}...'
+    
 class LastNewsUpdate(models.Model):
     time = models.DateTimeField()
