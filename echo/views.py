@@ -4,14 +4,22 @@ from users.models import EchoUser, Follow
 from notifications.models import Alerts
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 
 
-# Main page logic is contained in Echo.JS and Views.AJAX_response
+# Page logic is contained in Echo.JS and ajax_response(below)
 def index(request):
     context = {
         'title': 'Home | Echo',
     }
+    return render(request, 'echo/index.html', context=context)
 
+@login_required
+def follows_feed(request):
+    context = {
+        'title': 'My Follows | Echo',
+    }
     return render(request, 'echo/index.html', context=context)
 
 
@@ -45,14 +53,41 @@ def ajax_response(request):
         }
 
         if request.GET['action'] == 'get_feed_posts':
-            posts = Post.objects.order_by('timestamp').reverse().filter(reply_to=None).all()
+            posts = Post.objects.filter(reply_to=None).order_by('timestamp').reverse().all()
             data['total'] = len(posts)
             page = int(request.GET['page'])
             limit = int(request.GET['limit'])
             start = page * limit - limit
             end = page * limit
             posts = posts[start:end]
-            
+
+        if request.GET['action'] == 'get_follows_posts':
+            follow_list = []
+            follows = request.user.following.all()
+
+            if not follows.exists():
+                data['status'] = 'no_posts_retrieved'
+
+            for follow in follows:
+                follow_list.append(follow.follow)
+
+            posts = Post.objects.filter(echouser__in=follow_list, reply_to=None).order_by('timestamp').reverse().all()
+            data['total'] = len(posts)
+            page = int(request.GET['page'])
+            limit = int(request.GET['limit'])
+            start = page * limit - limit
+            end = page * limit
+            posts = posts[start:end]
+
+        if request.GET['action'] == 'get_search_posts':
+            query = request.GET['instance']
+            posts = Post.objects.filter(post__icontains=query).annotate(
+                popularity=(Count('likes') + Count('reposts') + Count('replies'))).order_by('popularity').reverse()
+            page = int(request.GET['page'])
+            limit = int(request.GET['limit'])
+            start = page * limit - limit
+            end = page * limit
+            posts = posts[start:end]
 
         if request.GET['action'] == 'get_profile_replies':
             echouser = EchoUser.objects.get(username=request.GET['instance'])
@@ -222,7 +257,7 @@ def search_response(request):
         if query:
             user_list = []
             names = []
-            results = EchoUser.objects.filter(username__startswith=query).order_by('last_login').reverse()
+            results = EchoUser.objects.filter(username__startswith=query).exclude(username=request.user.username).order_by('last_login').reverse()
             for result in results:
                 if len(user_list) < 5:
                     user = dict()
@@ -234,7 +269,7 @@ def search_response(request):
                 else: break
             
             if len(user_list) < 5:
-                results = EchoUser.objects.filter(username__icontains=query).exclude(username__in=names)
+                results = EchoUser.objects.filter(username__icontains=query).exclude(username__in=names).exclude(username=request.user.username)
                 for result in results:
                     if len(user_list) < 5:
                         user = dict()
