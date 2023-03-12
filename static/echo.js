@@ -31,12 +31,17 @@ function getCookie(name) {
 
 const csrftoken = getCookie("csrftoken");
 
-let post_page = 1;
-let post_limit = 30;
-let post_total;
+let postPage = 1;
+let postLimit = 30;
+let postTotal;
+
+let articleLimit = 15;
+let articlePage = 1;
+let articleTotal;
+
 
 // Ajax Function Template & On-Success Responses //
-function interactive(method, url, action, instance, page = post_page, limit = post_limit) {
+function interactive(method, url, action, instance, page = postPage, limit = postLimit) {
   $.ajax({
     type: method,
     url: url,
@@ -64,7 +69,7 @@ function interactive(method, url, action, instance, page = post_page, limit = po
         }
       }
       if (data["status"] == "posts_retrieved") {
-        post_total = data['total'];
+        postTotal = data['total'];
         renderPosts(data);
       }
       if (data["status"] == "post_retrieved") {
@@ -96,6 +101,13 @@ function interactive(method, url, action, instance, page = post_page, limit = po
             `)
           } 
         }
+      }
+      if (data["status"] == "no_posts_retrieved") {
+        $("section").append(`
+          <div class="section-container">
+            <div class="posts-none">No posts found</div>
+          </div>
+        `)
       }
     },
     failure: function () {
@@ -478,6 +490,7 @@ $(document).on("click", ".post-repost-form", function (event) {
 
 // GET MAIN POST FEED //
 if (String(location.pathname) == "/") {
+  $(".feed-type.main").addClass("active");
   let method = "GET";
   let url = "/ajax/";
   let action = "get_feed_posts";
@@ -491,9 +504,32 @@ if (String(location.pathname) == "/") {
 
   $(document).on("scroll", function () {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 30 && post_page * post_limit < post_total) {
-      post_page++;
+    if (scrollTop + clientHeight >= scrollHeight - 30 && postPage * postLimit < postTotal) {
+      postPage++;
       interactive(method, url, action, instance)
+    }
+  });
+}
+
+// GET FOLLOWS POST FEED //
+if (String(location.pathname) == "/follows/") {
+  $(".feed-type.follows").addClass("active");
+  let method = "GET";
+  let url = "/ajax/";
+  let action = "get_follows_posts";
+  let instance;
+  if ($(".user-display").has(".user-link").length) {
+    instance = $(".user-link").attr("href").split("/")[3];
+  } else {
+    instance = "guest";
+  }
+  interactive(method, url, action, instance);
+
+  $(document).on("scroll", function () {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if (scrollTop + clientHeight >= scrollHeight - 30 && postPage * postLimit < postTotal) {
+      postPage++;
+      interactive(method, url, action, instance);
     }
   });
 }
@@ -513,7 +549,7 @@ if (
 
 // GET PROFILE TABS & POSTS //
 if (String(location.pathname).split("/")[2] == "profile") {
-  post_page = 1;
+  postPage = 1;
   let method = "GET";
   let url = "/ajax/";
   let action = "get_profile_posts";
@@ -526,8 +562,8 @@ if (String(location.pathname).split("/")[2] == "profile") {
 
   $(document).on("scroll", function () {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 30 && post_page * post_limit < post_total) {
-      post_page++;
+    if (scrollTop + clientHeight >= scrollHeight - 30 && postPage * postLimit < postTotal) {
+      postPage++;
       interactive(method, url, action, instance)
     }
   });
@@ -535,7 +571,7 @@ if (String(location.pathname).split("/")[2] == "profile") {
 
 $(document).on("click", ".profile-posts", function () {
   removePosts();
-  post_page = 1;
+  postPage = 1;
   let method = "GET";
   let url = "/ajax/";
   let action = "get_profile_posts";
@@ -548,8 +584,8 @@ $(document).on("click", ".profile-posts", function () {
 
   $(document).on("scroll", function () {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 30 && post_page * post_limit < post_total) {
-      post_page++;
+    if (scrollTop + clientHeight >= scrollHeight - 30 && postPage * postLimit < postTotal) {
+      postPage++;
       interactive(method, url, action, instance)
     }
   });
@@ -557,7 +593,7 @@ $(document).on("click", ".profile-posts", function () {
 
 $(document).on("click", ".profile-replies", function () {
   removePosts();
-  post_page = 1;
+  postPage = 1;
   let method = "GET";
   let url = "/ajax/";
   let action = "get_profile_replies";
@@ -570,8 +606,8 @@ $(document).on("click", ".profile-replies", function () {
 
   $(document).on("scroll", function () {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 30 && post_page * post_limit < post_total) {
-      post_page++;
+    if (scrollTop + clientHeight >= scrollHeight - 30 && postPage * postLimit < postTotal) {
+      postPage++;
       interactive(method, url, action, instance)
     }
   });
@@ -579,7 +615,7 @@ $(document).on("click", ".profile-replies", function () {
 
 $(document).on("click", ".profile-likes", function () {
   removePosts();
-  post_page = 1;
+  postPage = 1;
   let method = "GET";
   let url = "/ajax/";
   let action = "get_profile_likes";
@@ -592,8 +628,8 @@ $(document).on("click", ".profile-likes", function () {
 
   $(document).on("scroll", function () {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 30 && post_page * post_limit < post_total) {
-      post_page++;
+    if (scrollTop + clientHeight >= scrollHeight - 30 && postPage * postLimit < postTotal) {
+      postPage++;
       interactive(method, url, action, instance)
     }
   });
@@ -777,12 +813,22 @@ $(document).on("input", ".chat-user-search", function () {
   }
 })
 
+/* click() => close search results if click outside */
+if (location.pathname.split("/")[1] == "chat") {
+  $(document).on("click", function (e) {
+    let $container = $(".chat-to");
+    if (!$container.is(e.target) && $container.has(e.target).length === 0) {
+      $(".user-search-results").remove()
+    } 
+  });
+}
+
 /* BROWSE SEARCH BAR */
 $(document).on("input", ".browse-search-input", function () {
   if (!$(".browse-search-suggest").length) {
     $(".browse-search-bar").append(`
       <div class='browse-search-suggest' style="top: ${
-        $(".browse-search-input").offset().top - $(".browse-search-input").height()
+        ($(".browse-search-bar").offset().top - $(window).scrollTop()) - $(".browse-search-bar").height()
       }px">
       </div>
     `);
@@ -792,14 +838,12 @@ $(document).on("input", ".browse-search-input", function () {
   } else {
     query = $(this).val();
 
-    $.get("/browse/search/", { "q": query, csrfmiddlewaretoken: csrftoken })
+    $.get("/browse/search/", { "q": query, action: 'suggest', csrfmiddlewaretoken: csrftoken })
       .done(function (data) {
-        console.log(data);
-
         $(".browse-search-suggest").children().remove();
         if (!data.users.length && !data.posts.length && !data.articles.length) {
           $(".browse-search-suggest").append(`
-            <div class="null-result">No users or content query</div>
+            <div class="null-result">No users or content matching query</div>
           `);
         } else {
           if (data.users.length) {
@@ -807,8 +851,8 @@ $(document).on("input", ".browse-search-input", function () {
             for (let user of data["users"]) {
               $(".browse-search-suggest").append(`
                 <div class="browse-search-result" onclick="location.pathname='/users/profile/${user.uuid}/'">
-                  <div class="user-search-avatar"><img src="${user.avatar}" /></div>
-                  <div class="user-search-username">${user.username}</div>
+                  <div class="user-search-avatar browse"><img src="${user.avatar}" /></div>
+                  <div class="user-search-username browse">${user.username}</div>
                 </div>
               `);
             }
@@ -835,8 +879,8 @@ $(document).on("input", ".browse-search-input", function () {
             for (let article of data.articles) {
               let title = article.title
               let source = article.source
-              if (title.length > 40) { title = title + "..." };
-              if (source.length > 30) { source =  source + "..." }
+              if (title.length > 24) { title = title + "..." };
+              if (source.length > 24) { source =  source + "..." }
               $(".browse-search-suggest").append(`
                 <div class="browse-search-result" onclick="location.pathname='/browse/${article.category}/${article.uuid}/'">
                   <div class="article-search-box">
@@ -854,12 +898,11 @@ $(document).on("input", ".browse-search-input", function () {
 })
 
 /* click() => close search results if click outside */
-if (location.pathname.split("/")[1] == "chat") {
+if (location.pathname.split("/")[1] == "browse") {
   $(document).on("click", function (e) {
-    let $container = $(".chat-to");
+    let $container = $(".browse-search-bar");
     if (!$container.is(e.target) && $container.has(e.target).length === 0) {
-      $(".user-search-results").remove()
-      $(".chat-user-search").val(null)
+      $(".browse-search-suggest").remove()
     } 
   });
 }
@@ -999,6 +1042,93 @@ $(document).on("click", ".article-share-form", function (event) {
     $(".article-share-form").remove();
   }
 });
+
+/* SEARCH PAGES INFINITE SCROLL */
+$(window).on("load", function () {
+  if (location.pathname.split("/")[2] == "search") {
+    let category = location.pathname.split("/")[3];
+    let limit, page, total;
+    if (category == 'articles') {
+      [limit, page] = [articleLimit, articlePage]
+    } else {
+      [limit, page] = [postLimit, postPage]
+    }
+    total = $("#search-total").val();
+    $("#search-total").remove()
+    $(document).on("scroll", function () {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      if (
+        scrollTop + clientHeight >= scrollHeight - 30 &&
+        (page * limit < total || total < 0)
+      ) {
+        page++;
+        if (category == 'posts') {
+          interactive(
+            "GET",
+            "/ajax/",
+            "get_search_posts",
+            location.search.slice(3)
+          );
+        } else {
+          $.get(`/browse/search/${category}/`, {
+            csrfmiddlewaretoken: csrftoken,
+            q: location.search.slice(3),
+            category: category,
+            page: page,
+            limit: limit
+          }, function (data) {
+            if (category == 'users') {
+              for (let user of data.results) {
+                if (user.bio.length) {
+                  $("section").append(`
+                    <div class="section-container">
+                      <div class="search-user-container">
+                        <img class="search-user-avatar" src="${user.avatar.url}">
+                        <div class="search-user-info">
+                          <div class="search-user-name">${user.username}</div>
+                          <div class="search-user-bio">${user.bio}</div>
+                        </div>
+                      </div>
+                    </div>
+                  `)
+                } else {
+                  $("section").append(`
+                    <div class="section-container">
+                      <div class="search-user-container">
+                        <img class="search-user-avatar" src="${user.avatar.url}">
+                        <div class="search-user-info">
+                          <div class="search-user-name">${user.username}</div>
+                        </div>
+                      </div>
+                    </div>
+                  `);
+                }
+              }
+            }
+            if (category == 'articles') {
+              for (let article of data.results) {
+                $("section").append(`
+                  <div class="section-container">
+                    <a class="search-article" href="/browse/${article.category}/${article.uuid}">
+                      <div class="search-article-image">
+                        <img src="${article.image}" alt="news article image" />
+                      </div>
+
+                      <div class="search-article-text">
+                        <div class="search-article-title">${article.title}</div>
+                        <div class="search-article-source">${article.source}</div>
+                      </div>
+                    </a>
+                  </div>
+                `);
+              }
+            }
+          })
+        }
+      }
+    });
+  }
+})
 
 /* CALCULATE SIDEBAR STICKY SCROLL */
 if ($(".side").height() > ($(window).height() - 60)) {
