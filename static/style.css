@@ -94,7 +94,7 @@ header {
   width: 100%;
   position: fixed;
   top:0;
-  z-index: 2;
+  z-index: 10;
 }
 
 /* logo */
@@ -104,6 +104,14 @@ header {
   width: 1140px;
   justify-content: space-between;
   align-items: center;
+}
+
+.user-header-link {
+  display: none;
+}
+
+.user-header-avatar {
+  display: none;
 }
 
 .logo-container {
@@ -195,6 +203,20 @@ header {
     justify-content: center;
   }
 
+  .user-header-avatar {
+    display: flex;
+    border-radius: 50%;
+    position: fixed;
+    margin: 0;
+    top: 8px;
+    left: 12px;
+    height: 45px;
+    width: 45px;
+  }
+
+  .user-header-link {
+    display: flex;
+  }
   .logo-container {
     justify-self: center;
     margin-left: 0;
@@ -410,21 +432,11 @@ main {
 
 @media(max-width: 991.98px) {
   .user-avatar {
-    margin: 0;
-    position: fixed;
-    top: 4px;
-    left: 4px;
-    height: 50px;
-    width: 50px;
+    display: none;
   }
 
   .user-link {
-    position: fixed;
-    top: 4px;
-    left: 4px;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
+    display: none;
   }
 
   .guest-text {
@@ -668,10 +680,31 @@ aside {
 
 /* ------------------------- INDEX.HTML ------------------------- */
 
+.feed-type-container {
+  width: 100%;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #1f1f1f;
+  border-radius: 15px;
+  border: 1px outset #11111188;
+}
+
+.feed-type {
+  display: flex;
+  padding: 10px 25px;
+  justify-content: center;
+  align-items: center;
+  color: #ffe15095
+}
+
+.feed-type.active {
+  color: #ffe150
+}
+
 .section-container {
   padding: 15px 10px 0;
   display: flex;
-  flex-wrap: wrap;
 }
 
 .section-container:last-of-type {
@@ -1011,6 +1044,10 @@ aside {
 }
 
 /* ------------------------- PROFILE.HTML ------------------------- */
+.section-container.profile {
+  flex-direction: column;
+}
+
 .profile-banner {
   height: 100px;
   flex-basis: 100%;
@@ -1447,22 +1484,23 @@ aside {
   margin: 0 0 0 45px;
 }
 
-.user-search-results.message > div {
-  width: 100%;
-  height: 60px;
-  display: flex;
-  align-items: center;
-}
-
 .null-result {
+  display: flex;
   color: #cc9565;
   background-color: #00000044;
+  padding: 20px 0;
+  border-radius: 10px;
+  text-align: center;
   justify-content: center;
 }
 
 .user-search-result {
   justify-content: left;
   border-radius: 20px;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
 }
 
 .user-search-result:hover {
@@ -1665,19 +1703,20 @@ aside {
 /* ------------------------------ Message Thread List ------------------------------ */
 .chat-list-container {
   background-color: #1d1d1d;
-  height: calc(100vh - 80px);
+  min-height: calc(100vh - 80px);
   display: flex;
   flex-direction: column;
   margin: 10px;
   border-radius: 15px;
   border: 1px solid #404040;
+  overflow: none;
 }
 
 .chat-list-header {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: auto;
 }
 
 .chat-to {
@@ -1711,14 +1750,11 @@ aside {
   border-bottom: 1px;
   border-style: solid;
   border-color: #333333;
-  overflow-y: scroll;
-  border-radius: 0 0 15px 15px;
 }
 
 .chat-instance {
   display: flex;
   padding: 15px 15px 15px 5px;
-  margin-left: 10px;
   font-size: 16px;
   border-top: 1px groove #333333;
 }
@@ -1836,9 +1872,10 @@ aside {
 }
 
 #alerts-h1 {
-  font-size: 24px;
+  font-size: 22px;
   text-align: center;
   margin: 0 0 5px;
+  color: #dfb700
 }
 
 .alert-icon-container {
@@ -1915,12 +1952,9 @@ aside {
 /* Settings */
 .settings-container {
   display: flex;
-  width: fit-content;
+  width: 100%;
   flex-direction: column;
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  align-items: center;
   background-color: #292929;
   border-radius: 20px;
   padding: 20px;
@@ -1980,6 +2014,10 @@ aside {
   font-family: 'righteous';
   padding: 5px 0;
   margin: 10px 0 10px;
+}
+
+.side-container:hover {
+  background-color: #252525;
 }
 
 .side-container:nth-of-type(1) {
@@ -2078,7 +2116,7 @@ aside {
 /* ---------------------------------------- BROWSE APP ----------------------------------- */
 .browse-container {
   width: inherit;
-  padding: 10px;
+  padding: 10px 0;
   margin: 85px 0 0 0;
 }
 
@@ -2119,16 +2157,6 @@ aside {
   color: #e1e1e1;
 }
 
-.browse-search-button {
-  width: 60px;
-  height: 30px;
-  border-radius: 20px;
-  margin: 0 0 0 10px;
-  border: 1px #83f100aa;
-  background-color: #83f100aa;
-  color: #fff1b0;
-}
-
 .browse-categories {
   display: flex;
   width: 95%;
@@ -2167,6 +2195,10 @@ aside {
   border-radius: 20px;
   margin: 10px 0;
   color: #e1e1e1;
+}
+
+.browse-article:hover {
+  background-color: #252525;
 }
 
 .browse-article-title {
@@ -2512,30 +2544,40 @@ aside {
   overflow: hidden;
 }
 
-/* BROWSE >> SEARCH */
+/* BROWSE >> SEARCH SUGGESTIONS */
 .browse-search-suggest {
   position: absolute;
   background-color: #000000dd;
   width: inherit;
-  border-radius: 20px;
+  border-radius: 10px;
+}
+
+@media(max-width: 575.98px) {
+  .browse-search-suggest {
+    width: 100%;
+  }
 }
 
 .browse-search-type {
   color: #fff9b0aa;
   background-color: #40c15733;
   padding: 5px 20px;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .browse-search-result {
   display: flex;
   align-items: center;
-  border-radius: 50px;
+  border-radius: 10px;
 }
 
 .browse-search-result:hover {
   cursor: pointer;
   background-color: #333333bb;
+}
+
+.user-search-avatar.browse {
+  margin: 5px 20px;
 }
 
 .post-search-avatar {
@@ -2576,4 +2618,159 @@ aside {
 .article-search-source {
   margin: 5px 0 0 0;
   color: #20c147aa
+}
+
+/* BROWSE >> SEARCH RESULTS PAGE */
+.search-header-container {
+  position: fixed;
+  width: inherit;
+  padding: 10px 10px 0;
+  background-color: #161616;
+}
+
+.search-header {
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  background-color: #1f1f1f;
+  border: 1px outset #1f1f1f88;
+  width: 100%;
+  align-items: center;
+  box-shadow: 0 0 10px 10px #16161688;
+}
+
+.search-query {
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  padding: 3px 15px;
+  border-radius: 20px;
+  background-color: #2b2b2b;
+  color: #999999;
+  margin: 8px 0 0 0;
+  width: 80%;
+}
+
+.search-categories {
+  display: flex;
+  width: 95%;
+  justify-content: space-between;
+  margin: 5px 0;
+  font-size: 18px;
+}
+
+.search-users,
+.search-posts,
+.search-articles {
+  display: flex;
+  width: 30%;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  color: #ffe15095;
+}
+
+.search-container {
+  width: inherit;
+  margin: 90px 0 0 0;
+}
+
+.search-categories > a.active {
+  color: #efd150;
+}
+
+.search-article-container {
+  margin: 0 10px;
+}
+
+.search-article {
+  display: flex;
+  background-color: #1f1f1f;
+  border: 1px outset #1f1f1f88;
+  padding: 10px 10px;
+  border-radius: 15px;
+  color: #e1e1e1;
+  width: 100%;
+}
+
+.search-article:hover {
+  background-color: #252525;
+}
+
+.search-article-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 0 0 10px;
+}
+
+.search-article-title {
+  color: #e1e1e1;
+}
+
+.search-article-source {
+  color: #40b167;
+  height: 1em;
+  overflow: hidden;
+}
+
+.search-article-image {
+  width: 150px;
+  height: 80px;
+}
+
+.search-article-image > img {
+  border-radius: 5px;
+  width: inherit;
+  height: inherit;
+  object-fit: cover;
+}
+
+.search-user-container {
+  display: flex;
+  background-color: #1f1f1f;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 1px outset #11111188;
+  width: 100%;
+}
+
+.search-user-container:hover {
+  background-color: #252525;
+}
+
+.search-user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 0 0 0 10px;
+}
+
+.search-user-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.search-user-name {
+  color: #efd150;
+}
+
+.search-user-bio {
+  margin: 5px 0 0 0;
+  color: #ffffcccc;
+}
+
+.posts-none {
+  display: flex;
+  height: 50px;
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 20px;
+  background-color: #1f1f1f;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 1px 1px inset #333333;
+  color: #ffe15085;
 }
