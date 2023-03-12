@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{title|capfirst}}</title>
   {% load static %}
@@ -29,6 +28,11 @@
 <body>
   <header>
     <div class='header-container'>
+        {% if user.is_authenticated %}
+        <a class='user-header-link' href="/users/profile/{{user.uuid}}">
+          <img class='user-header-avatar' src="{{user.avatar.url}}">
+        </a>
+        {% endif %}
 
       <div onclick="location.href='/'" class='logo-container'>
         
@@ -74,8 +78,6 @@
       
     </div>
   </header>
-
-
 
   <main>
     <div class='nav-container'>
@@ -171,9 +173,6 @@
           </div>
         </div>
         {% endfor %}
-
-
-
       </div>
     </aside>
   </main>
