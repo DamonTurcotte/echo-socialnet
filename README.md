@@ -17,7 +17,7 @@ A fully functional Twitter-like social networking application built on the Pytho
 
 ## Optimizations
 
-Uploaded avatar images are deconstructed with BytesIO and repackaged as 300x300 RGBA WebP format image files to optimize for bandwidth and storage capacity, as well as normalizing filenames by replacing original filename with user UUID.
+Uploaded avatar images are deconstructed with BytesIO and repackaged as 300x300 RGBA WebP format image files to optimize for bandwidth and storage capacity, as well as filename normalization.
 
 Custom password hashing, security tokens and both server and client-side authentication measures to ensure data integrity and server security.
 
