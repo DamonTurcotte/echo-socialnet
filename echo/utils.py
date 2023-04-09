@@ -7,13 +7,13 @@ def time_between(date):
     diff = now - date
 
     if diff.seconds < 60:
-         seconds = diff.seconds
-         if seconds < 1:
-             return 'now'
-         elif seconds == 1:
-             return '1 second ago'
-         else:
-             return f'{seconds} seconds ago'
+        seconds = diff.seconds
+        if seconds < 1:
+            return 'now'
+        elif seconds == 1:
+            return '1 second ago'
+        else:
+            return f'{seconds} seconds ago'
 
     elif diff.seconds < 3600:
         minutes = math.floor(diff.seconds / 60)
@@ -85,7 +85,7 @@ def make_post_objects(posts_queryset, request_username):
         ]
 
         for field in alt_post_fields:
-             post_view[field] = ''
+            post_view[field] = ''
 
         try:
             post_view['reply_to_id'] = post.reply_to.uuid  # type:ignore
