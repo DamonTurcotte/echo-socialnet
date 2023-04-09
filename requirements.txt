@@ -1,0 +1,2 @@
+Pillow        (pip install Pillow)
+environ       (pip install django-environ)
