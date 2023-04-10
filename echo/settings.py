@@ -1,14 +1,12 @@
 from pathlib import Path
 import os
-import environ
+from dotenv import load_dotenv
 
-env = environ.Env()
-environ.Env.read_env()
+load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = True
 
@@ -61,11 +59,11 @@ WSGI_APPLICATION = 'echo.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": env("ENGINE"),
-        "NAME": env("NAME"),
-        "USER": env("USER"),
-        "PASSWORD": env("PASSWORD"),
-        "HOST": env("HOST"),
+        "ENGINE": os.environ['ENGINE'],
+        "NAME": os.environ['NAME'],
+        "USER": os.environ['USER'],
+        "PASSWORD": os.environ['PASSWORD'],
+        "HOST": os.environ['HOST'],
         "PORT": "",
     }
 }
@@ -101,13 +99,13 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [BASE_DIR / "static/", BASE_DIR / "users/static/"]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+MEDIA_URL = '/media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
