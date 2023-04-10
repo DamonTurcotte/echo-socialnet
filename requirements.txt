@@ -1,2 +1,2 @@
 Pillow        (pip install Pillow)
-environ       (pip install django-environ)
+dotenv       (pip install python-dotenv)
