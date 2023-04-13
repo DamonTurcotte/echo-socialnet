@@ -30,4 +30,6 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
+        envfile=$(find ~/echo-runner -type f -wholename "*echo-env/bin/activate")
+        source $envfile
         python manage.py test
