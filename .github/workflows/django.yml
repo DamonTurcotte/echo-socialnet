@@ -7,11 +7,11 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     strategy:
       max-parallel: 4
       matrix:
-        python-version: ['3.10.7']
+        python-version: ['3.8']
 
     steps:
     - uses: actions/checkout@v3
@@ -21,12 +21,11 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install Dependencies and VENV
       run: |
-        python -m pip install --upgrade pip
         appfile=$(find ~/echo-runner -type f -name "*manage.py")
         appdir=$(dirname $appfile)
         cd $appdir
         echo "${{ secrets.ECHO_ENV }}" > echo/.env
-        python3 -m venv echo-env
+        virtualenv echo-env
         source echo-env/bin/activate
         pip install -r requirements.txt
     - name: Run Tests
