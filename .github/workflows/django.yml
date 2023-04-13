@@ -28,6 +28,7 @@ jobs:
         virtualenv echo-env
         source echo-env/bin/activate
         pip install -r requirements.txt
+        pip install gunicorn psycopg2-binary
     - name: Run Tests
       run: |
         envfile=$(find ~/echo-runner -type f -wholename "*echo-env/bin/activate")
