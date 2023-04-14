@@ -687,7 +687,7 @@ aside {
   justify-content: space-between;
   background-color: #1f1f1f;
   border-radius: 15px;
-  border: 1px outset #11111188;
+  border: 0.5px outset #444444;
 }
 
 .feed-type {
@@ -998,6 +998,10 @@ aside {
     padding: 0;
   }
 
+  .section-container:last-of-type {
+    margin: 15px 0 0 0;
+  }
+
   .post-container {
     width: 100%;
     padding: 2vw;
@@ -1242,7 +1246,7 @@ aside {
   background-color: #1f1f1f;
   justify-content: center;
   align-items: center;
-  border: 1px outset #1f1f1f55;
+  border: 0.5px outset #444444;
   color: #ffe15085;
 }
 
@@ -1561,7 +1565,7 @@ aside {
   resize:none;
   background-color: #1f1f1f;
   color: #e1e1e1;
-  border: 1px inset #111111;
+  border: 0.5px inset #444444;
   border-radius: 20px;
   font-size: 15px;
   height: 40px;
@@ -1730,7 +1734,7 @@ aside {
 
 .chat-user-search {
   width: calc(100% - 30px);
-  border: 1px inset #11111188;
+  border: 0.5px inset #444444;
   background-color: #1c1c1c;
   font-size: inherit;
   color: #777777;
@@ -1930,7 +1934,7 @@ aside {
   width: 260px;
   background-color: #292929;
   border-radius: 20px;
-  border: 1px outset #11111188;
+  border: 0.5px outset #444444;
   font-size: 18px;
   color: #efd150;
   fill: #efd150;
@@ -2132,7 +2136,7 @@ aside {
   flex-direction: column;
   border-radius: 20px;
   background-color: #1f1f1f;
-  border: 1px outset #1f1f1f88;
+  border: 0.5px outset #444444;
   width: 100%;
   align-items: center;
   box-shadow: 0 0 10px 10px #16161688;
@@ -2150,7 +2154,7 @@ aside {
   border-radius: 20px;
   flex-basis: 100px;
   height: 30px;
-  background-color: #1c1c1c;
+  background-color: #1a1a1a;
   border: 1px inset #1c1c1c;
   padding: 0 10px;
   font-size: 15px;
@@ -2190,7 +2194,7 @@ aside {
 .browse-article {
   display: block;
   background-color: #1f1f1f;
-  border: 1px outset #1f1f1f88;
+  border: 0.5px outset #444444;
   padding: 10px 15px;
   border-radius: 20px;
   margin: 10px 0;
@@ -2633,7 +2637,7 @@ aside {
   flex-direction: column;
   border-radius: 20px;
   background-color: #1f1f1f;
-  border: 1px outset #1f1f1f88;
+  border: 0.5px outset #444444;
   width: 100%;
   align-items: center;
   box-shadow: 0 0 10px 10px #16161688;
@@ -2687,7 +2691,7 @@ aside {
 .search-article {
   display: flex;
   background-color: #1f1f1f;
-  border: 1px outset #1f1f1f88;
+  border: 0.5px outset #444444;
   padding: 10px 10px;
   border-radius: 15px;
   color: #e1e1e1;
@@ -2732,7 +2736,7 @@ aside {
   background-color: #1f1f1f;
   padding: 10px 15px;
   border-radius: 20px;
-  border: 1px outset #11111188;
+  border: 0.5px outset #444444;
   width: 100%;
 }
 
