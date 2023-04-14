@@ -106,11 +106,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATIC_DIRS = [
-#     os.path.join(BASE_DIR, "static"),
-# ]
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+if DEBUG:
+    STATIC_DIRS = [
+        os.path.join(BASE_DIR, "static"),
+    ]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 
@@ -125,8 +126,8 @@ LOGIN_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = "users.EchoUser"
 
-# PRODUCTION ONLY
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_SAMESITE = 'None'
+if not DEBUG: 
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SAMESITE = 'None'
+    SESSION_COOKIE_SAMESITE = 'None'
