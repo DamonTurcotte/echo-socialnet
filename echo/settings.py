@@ -8,9 +8,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    os.environ['ALLOWED_HOSTS1'],
+    os.environ['ALLOWED_HOSTS2'],
+    os.environ['ALLOWED_HOSTS3'],
+    'localhost'
+]
 
 INSTALLED_APPS = [
     'news.apps.NewsConfig',
@@ -101,6 +106,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# STATIC_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+# ]
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
@@ -114,7 +123,7 @@ LOGIN_REDIRECT_URL = "/"
 AUTH_USER_MODEL = "users.EchoUser"
 
 # PRODUCTION ONLY
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SAMESITE = 'None'
-# SESSION_COOKIE_SAMESITE = 'None'
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'
