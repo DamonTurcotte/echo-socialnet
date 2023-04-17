@@ -569,6 +569,7 @@ if (String(location.pathname).split("/")[2] == "profile") {
   });
 }
 
+// Posts Tab //
 $(document).on("click", ".profile-posts", function () {
   removePosts();
   postPage = 1;
@@ -591,6 +592,7 @@ $(document).on("click", ".profile-posts", function () {
   });
 });
 
+// Replies Tab //
 $(document).on("click", ".profile-replies", function () {
   removePosts();
   postPage = 1;
@@ -613,6 +615,7 @@ $(document).on("click", ".profile-replies", function () {
   });
 });
 
+// Likes Tab //
 $(document).on("click", ".profile-likes", function () {
   removePosts();
   postPage = 1;
