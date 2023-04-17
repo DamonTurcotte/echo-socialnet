@@ -19,7 +19,7 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies and VENV
+    - name: Install Dependencies, VENV, Make Django Migrations
       run: |
         appfile=$(find ~/echo-runner -type f -name "*manage.py")
         appdir=$(dirname $appfile)
@@ -29,7 +29,9 @@ jobs:
         source echo-env/bin/activate
         pip install -r requirements.txt
         pip install gunicorn psycopg2-binary
-    - name: Run Tests
+        python manage.py makemigrations chat news notifications posts users
+        python manage.py migrate
+    - name: Migrate & Run Tests
       run: |
         envfile=$(find ~/echo-runner -type f -wholename "*echo-env/bin/activate")
         source $envfile
