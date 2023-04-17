@@ -31,7 +31,8 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
     path('alerts/', include('notifications.urls')),
     path('browse/', include('news.urls')),
-    path('settings/', views.settings_view)
+    path('settings/', views.settings_view),
+    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider'))
 ]
 
 if settings.DEBUG:
