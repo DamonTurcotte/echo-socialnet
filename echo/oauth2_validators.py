@@ -5,8 +5,9 @@ class CustomOAuth2Validator(OAuth2Validator):
     oidc_claim_scope = None
     def get_additional_claims(self, request):
         claims = {
+            "uuid": request.user.uuid,
             "username": request.user.username,
-            "avatar": request.user.avatar.url
+            "avatar": request.user.avatar.url,
         }
 
         return claims
