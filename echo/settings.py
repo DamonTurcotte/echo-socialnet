@@ -18,6 +18,7 @@ ALLOWED_HOSTS = [
 ]
 
 INSTALLED_APPS = [
+    'oauth2_provider',
     'news.apps.NewsConfig',
     'notifications.apps.NotificationsConfig',
     'chat.apps.ChatConfig',
@@ -107,7 +108,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 if DEBUG:
-    STATIC_DIRS = [
+    STATICFILES_DIRS = [
         os.path.join(BASE_DIR, "static"),
     ]
 else:
