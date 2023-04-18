@@ -18,6 +18,7 @@ ALLOWED_HOSTS = [
 ]
 
 INSTALLED_APPS = [
+    'corsheaders',
     'oauth2_provider',
     'news.apps.NewsConfig',
     'notifications.apps.NotificationsConfig',
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -138,6 +140,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = "users.EchoUser"
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 if not DEBUG: 
     CSRF_COOKIE_SECURE = True
