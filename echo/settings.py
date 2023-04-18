@@ -45,6 +45,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'echo.urls'
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {
@@ -140,8 +141,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = "users.EchoUser"
-
-CORS_ORIGIN_ALLOW_ALL = True
 
 if not DEBUG: 
     CSRF_COOKIE_SECURE = True
