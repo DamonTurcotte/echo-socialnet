@@ -104,6 +104,8 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.ScryptPasswordHasher',
 ]
 
+OAUTH2_PROVIDER = { "PKCE_REQUIRED": False }
+
 # OAUTH2_PROVIDER = {
 #     "OAUTH2_VALIDATOR_CLASS": "django_oauth2_server.oauth_validator.CustomOAuth2Validator",
 #     "OIDC_ENABLED": True,
