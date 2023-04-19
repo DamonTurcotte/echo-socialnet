@@ -2,10 +2,12 @@ from django.shortcuts import render
 from posts.models import Post
 from users.models import EchoUser, Follow
 from notifications.models import Alerts
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
+from oauth2_provider.decorators import protected_resource
+import json
 
 
 # Page logic is contained in Echo.JS and ajax_response(below)
@@ -296,3 +298,15 @@ def under_construction(request):
 def settings_view(request):
     context = {'title': 'Settings | Echo'}
     return render(request, 'echo/settings.html', context=context)
+
+
+
+# oAuth2 response
+@protected_resource(scopes=['read'])
+def profile(request):
+    return HttpResponse(json.dumps({
+        'id': request.resource_owner.id,
+        'uuid': request.resource_owner.uuid,
+        'username': request.resource_owner.username,
+        'avatar': request.resource_owner.avatar.url,
+    }), content_type="application/json")
