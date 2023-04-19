@@ -34,6 +34,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -45,7 +46,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'echo.urls'
+
 CORS_ORIGIN_ALLOW_ALL = True
+
+SESSION_COOKIE_NAME = 'oauth2server_sessionid'
 
 TEMPLATES = [
     {
@@ -100,17 +104,17 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.ScryptPasswordHasher',
 ]
 
-OAUTH2_PROVIDER = {
-    "OAUTH2_VALIDATOR_CLASS": "django_oauth2_server.oauth_validator.CustomOAuth2Validator",
-    "OIDC_ENABLED": True,
-    "PKCE_REQUIRED": False,
-    "OIDC_RSA_PRIVATE_KEY": os.environ['OIDC_RSA_PRIVATE_KEY'],
-    'SCOPES': {
-        'read': 'Read scope',
-        'write': 'Write scope',
-        'openid': "OpenID Connect scope",
-    },
-}
+# OAUTH2_PROVIDER = {
+#     "OAUTH2_VALIDATOR_CLASS": "django_oauth2_server.oauth_validator.CustomOAuth2Validator",
+#     "OIDC_ENABLED": True,
+#     "PKCE_REQUIRED": False,
+#     "OIDC_RSA_PRIVATE_KEY": os.environ['OIDC_RSA_PRIVATE_KEY'],
+#     'SCOPES': {
+#         'read': 'Read scope',
+#         'write': 'Write scope',
+#         'openid': "OpenID Connect scope",
+#     },
+# }
 
 LANGUAGE_CODE = 'en-us'
 

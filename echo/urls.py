@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -32,7 +32,11 @@ urlpatterns = [
     path('alerts/', include('notifications.urls')),
     path('browse/', include('news.urls')),
     path('settings/', views.settings_view),
-    path('o/', include('oauth2_provider.urls', namespace='oauth2_provider'))
+]
+
+urlpatterns += [
+    re_path(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+    re_path(r'^profile/$', views.profile),
 ]
 
 if settings.DEBUG:
