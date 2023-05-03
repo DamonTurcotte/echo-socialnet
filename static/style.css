@@ -57,7 +57,7 @@ a {
 }
 
 body {
-  font-family: 'coda';
+  font-family: 'coda', 'saira', 'sans-serif';
 }
 
 /* SCROLLBAR */
@@ -288,7 +288,7 @@ main {
 .login-bio,
 .login-avatar,
 .login-submit {
-  font-family: 'coda';
+  font-family: 'coda', 'saira', sans-serif;
   margin: 10px 0;
   width: 90%;
   font-size: 15px;
@@ -626,6 +626,7 @@ aside {
 @media(max-width: 575.98px) {
   section {
     width: 375px;
+    max-width: 100%;
   }
 }
 
@@ -644,7 +645,7 @@ aside {
 
 .create-post-text {
   resize: none;
-  font-family: 'coda';
+  font-family: 'coda', 'saira', 'sans-serif';
   font-size: inherit;
   width: 420px;
   border-radius: 10px;
@@ -994,12 +995,12 @@ aside {
 @media(max-width: 374.98px) {
   .section-container {
     width: 100%;
-    margin: 15px 0;
-    padding: 0;
+    margin: 0;
+    padding: 15px 0 0;
   }
 
   .section-container:last-of-type {
-    padding: 0;
+    padding: 15px 0;
   }
 
   .post-container {
@@ -1913,13 +1914,14 @@ aside {
 
 .alert-none {
   border-radius: 20px;
+  border: 1px solid #292929;
   color: #e1e1e1aa;
   display: flex;
   justify-content: center;
   align-items: center;
   text-shadow: 0 0 1px #c1c1c1;
   height: 40px;
-  width: 200px;
+  width: 240px;
   background-color: #1f1f1f;
 }
 
@@ -2057,7 +2059,7 @@ aside {
 
 .news-container {
   display: flex;
-  font-family: 'coda';
+  font-family: 'coda', 'saira', 'sans-serif';
   font-size: 14px;
   padding: 5px 10px;
   width: 100%;
@@ -2120,6 +2122,7 @@ aside {
 /* ---------------------------------------- BROWSE APP ----------------------------------- */
 .browse-container {
   width: inherit;
+  max-width: 100%;
   padding: 10px 0;
   margin: 85px 0 0 0;
 }
@@ -2127,6 +2130,7 @@ aside {
 .browse-header-container {
   position: fixed;
   width: inherit;
+  max-width: 100%;
   padding: 10px 10px 0;
   background-color: #161616;
 }
@@ -2478,6 +2482,10 @@ aside {
   .article-container {
     border-radius: 0 0 10px 10px;
   }
+
+  .article-comment-none {
+    margin: 10px 0;
+  }
 }
 
 @media(max-width: 375px) {
@@ -2497,7 +2505,7 @@ aside {
 /* POST ARTICLE SHARE CARD */
 .post-article-card {
   display: flex;
-  font-family: 'coda';
+  font-family: 'coda', 'saira', 'sans-serif';
   font-size: 14px;
   padding: 5px 10px;
   width: 100%;
@@ -2777,4 +2785,27 @@ aside {
   align-items: center;
   box-shadow: 0 0 1px 1px inset #333333;
   color: #ffe15085;
+}
+
+@media(max-width: 374.98px) {
+  .browse-header-container {
+    padding: 10px 0 0 0;
+  }
+
+  .browse-categories {
+    font-size: 16px;
+  }
+
+  .search-article-image {
+    display: none;
+  }
+
+  .search-header-container {
+    padding: 10px 0 0 0;
+    max-width: 100%;
+  }
+
+  .search-container {
+    max-width: 100%;
+  }
 }
