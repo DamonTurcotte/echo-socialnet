@@ -6,17 +6,17 @@
   <title>{{title|capfirst}}</title>
   {% load static %}
   <link rel="shortcut icon" href="{% static 'icons/icon.svg' %}" type="image/svg">
-  <link rel="stylesheet" href="{% static 'style.css' %}">
   <style>
     @font-face {
       font-family: "coda";
-      src: url({% static 'fonts/coda/Coda-Regular.ttf' %}, {% static 'fonts/coda/Coda-ExtraBold.ttf' %}) format(truetype);
+      src: url({% static 'fonts/coda/Coda-Regular.ttf' %}) format(truetype);
     }
     @font-face {
       font-family: "righteous";
       src: url({% static 'fonts/Righteous/Righteous-Regular.ttf' %}) format(truetype);
     }
   </style>
+  <link rel="stylesheet" href="{% static 'style.css' %}">
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js">
     $(document).ready(function () {
       console.log("jQuery initialized.");
