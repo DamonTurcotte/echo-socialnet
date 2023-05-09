@@ -24,20 +24,20 @@
             {% if message.sender is True %}
             <div class='message-sent-container'>
               <div class='message-sent'>
-                {{message.content}}
-              </div>
-              <div class="message-timestamp">
-                {{message.timestamp}}
+                {{message.content|linebreaks}}
+                <div class="message-timestamp">
+                  {{message.timestamp}}
+                </div>
               </div>
             </div>
 
             {% else %}
             <div class="message-received-container">
               <div class="message-received">
-                {{message.content}}
-              </div>
-              <div class="message-timestamp">
-                {{message.timestamp}}
+                {{message.content|linebreaks}}
+                <div class="message-timestamp">
+                  {{message.timestamp}}
+                </div>
               </div>
             </div>
             {% endif %}
