@@ -2,3 +2,5 @@ __pycache__
 migrations/
 *.webp
 .env
+media/users/cyber.jpeg
+media/users/jet.jpg
