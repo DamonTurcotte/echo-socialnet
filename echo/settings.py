@@ -34,8 +34,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'oauth2_provider.middleware.OAuth2TokenMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -48,6 +48,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'echo.urls'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# CORS_ORIGIN_WHITELIST = [
+#     "https://turcotte.tech",
+# ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 SESSION_COOKIE_NAME = 'oauth2server_sessionid'
 
