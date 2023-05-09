@@ -947,8 +947,8 @@ $(document).on("click", ".message-send", function () {
           <div class='message-sent-container'>
             <div class='message-sent'>
               ${message["content"]}
+              <div class="message-timestamp">${message["timestamp"]}</div>
             </div>
-            <div class="message-timestamp">${message["timestamp"]}</div>
           </div>
           `)
         } else {
@@ -956,8 +956,8 @@ $(document).on("click", ".message-send", function () {
           <div class="message-received-container">
             <div class="message-received">
               ${message["content"]}
+              <div class="message-timestamp">${message["timestamp"]}</div>
             </div>
-            <div class="message-timestamp">${message["timestamp"]}</div>
           </div>
           `)
         }
