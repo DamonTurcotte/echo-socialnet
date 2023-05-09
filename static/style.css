@@ -1624,11 +1624,11 @@ aside {
 }
 
 .message-sent-container {
-  align-items: end;
+  align-items: flex-end;
 }
 
 .message-received-container {
-  align-items: start;
+  align-items: flex-start;
 }
 
 .message-sent,
@@ -1636,12 +1636,14 @@ aside {
   word-wrap: break-word;
   padding: 10px;
   max-width: 250px;
+  display: flex;
+  flex-direction: column;
 }
 
 .message-sent {
   background-color: #444444;
   border-radius: 10px 10px 0 10px;
-  
+  text-align: end;
 }
 
 .message-received {
@@ -1652,6 +1654,11 @@ aside {
 .message-timestamp {
   font-size: 14px;
   color: #ffffff44;
+  margin-top: 3px;
+}
+
+.message-sent .message-timestamp {
+  text-align: end;
 }
 
 @media(max-width: 767.98px) {
