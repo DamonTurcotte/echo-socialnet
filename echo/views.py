@@ -46,6 +46,14 @@ def ajax_response(request):
         posts = Post.objects.order_by('timestamp').reverse().all()
         echouser = request.user
         post_list = list()
+        page = request.GET.get('page')
+        limit = request.GET.get('limit')
+        if page and limit:
+            page = int(page)
+            limit = int(limit)
+            start = page * limit - limit
+            end = page * limit
+
         total = 0
 
         data = {
@@ -55,12 +63,10 @@ def ajax_response(request):
         }
 
         if request.GET['action'] == 'get_feed_posts':
-            posts = Post.objects.filter(reply_to=None).order_by('timestamp').reverse().all()
+            posts = Post.objects.filter(reply_to=None).annotate(
+                popularity=(Count('likes') + Count('replies') + Count('reposts'))
+                ).order_by('datestamp', 'popularity', 'timestamp').reverse()
             data['total'] = len(posts)
-            page = int(request.GET['page'])
-            limit = int(request.GET['limit'])
-            start = page * limit - limit
-            end = page * limit
             posts = posts[start:end]
 
         if request.GET['action'] == 'get_follows_posts':
@@ -75,20 +81,14 @@ def ajax_response(request):
 
             posts = Post.objects.filter(echouser__in=follow_list, reply_to=None).order_by('timestamp').reverse().all()
             data['total'] = len(posts)
-            page = int(request.GET['page'])
-            limit = int(request.GET['limit'])
-            start = page * limit - limit
-            end = page * limit
             posts = posts[start:end]
 
         if request.GET['action'] == 'get_search_posts':
             query = request.GET['instance']
             posts = Post.objects.filter(post__icontains=query).annotate(
-                popularity=(Count('likes') + Count('reposts') + Count('replies'))).order_by('popularity').reverse()
-            page = int(request.GET['page'])
-            limit = int(request.GET['limit'])
-            start = page * limit - limit
-            end = page * limit
+                popularity=(Count('likes') + Count('reposts') + Count('replies'))).order_by('popularity').reverse().all()
+            
+            data['total'] = len(posts)
             posts = posts[start:end]
 
         if request.GET['action'] == 'get_profile_replies':
@@ -96,12 +96,8 @@ def ajax_response(request):
             posts = Post.objects.order_by('timestamp').reverse().filter(
                 echouser=echouser.id).all()
             posts = posts.exclude(reply_to=None)
-            
+
             data['total'] = len(posts)
-            page = int(request.GET['page'])
-            limit = int(request.GET['limit'])
-            start = page * limit - limit
-            end = page * limit
             posts = posts[start:end]
 
         if request.GET['action'] == 'get_profile_posts':
@@ -111,10 +107,6 @@ def ajax_response(request):
             posts = posts.filter(reply_to=None)
 
             data['total'] = len(posts)
-            page = int(request.GET['page'])
-            limit = int(request.GET['limit'])
-            start = page * limit - limit
-            end = page * limit
             posts = posts[start:end]
 
         if request.GET['action'] == 'get_profile_likes':
@@ -123,10 +115,6 @@ def ajax_response(request):
                 echouser=echouser.id).all()
             posts = echouser.liked.order_by('timestamp').reverse().all()  # type:ignore
 
-            data['total'] = len(posts)
-            page = int(request.GET['page'])
-            limit = int(request.GET['limit'])
-            start = page * limit - limit
             end = page * limit
             posts = posts[start:end]
 
