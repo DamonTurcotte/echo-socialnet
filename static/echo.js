@@ -40,7 +40,7 @@ let articlePage = 1;
 let articleTotal;
 
 
-// Ajax Function Template & On-Success Responses //
+// Echo API dynamic content retrieval, parsing and data redirection //
 function interactive(method, url, action, instance, page = postPage, limit = postLimit) {
   $.ajax({
     type: method,
@@ -1045,6 +1045,16 @@ $(document).on("click", ".article-share-form", function (event) {
     $(".article-share-form").remove();
   }
 });
+
+
+// GET POSTS BY SEARCH QUERY //
+if (String(location.pathname) == "/browse/search/posts/") {
+  let method = 'GET';
+  let url = '/ajax/';
+  let action = 'get_search_posts';
+  let instance = location.href.split('?q=')[1];
+  interactive(method, url, action, instance);
+}
 
 /* SEARCH PAGES INFINITE SCROLL */
 $(window).on("load", function () {
