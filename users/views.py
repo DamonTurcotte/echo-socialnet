@@ -71,12 +71,14 @@ def signup_view(request):
     return render(request, 'users/signup.html', context=context)
 
 
-@login_required
 def profile_view(request, uuid):
     profile = EchoUser.objects.get(uuid=uuid)
     follow_status = ''
 
-    if profile == request.user:
+    if request.user.is_anonymous:
+        follow_status = 'anon'
+
+    elif profile == request.user:
         follow_status = 'self'
 
     elif Follow.objects.filter(echouser=request.user, follow=profile).exists():

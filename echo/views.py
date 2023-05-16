@@ -221,6 +221,9 @@ def ajax_response(request):
                 return JsonResponse(data)
             
         if request.POST['action'] == 'follow':
+            if request.user.is_anonymous:
+                return JsonResponse({'status': 'Anonymous users cannot follow'})
+
             profile = EchoUser.objects.get(uuid=request.POST['instance'])
             echouser = EchoUser.objects.get(uuid=request.user.uuid)
             data = {}
