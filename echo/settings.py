@@ -53,9 +53,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     "https://turcotte.tech",
 # ]
 
-CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOW_CREDENTIALS = True
 
-SESSION_COOKIE_NAME = 'oauth2server_sessionid'
+# SESSION_COOKIE_NAME = 'oauth2server_sessionid'
 
 TEMPLATES = [
     {
@@ -109,8 +109,6 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
     'django.contrib.auth.hashers.ScryptPasswordHasher',
 ]
-
-OAUTH2_PROVIDER = { "PKCE_REQUIRED": False }
 
 # OAUTH2_PROVIDER = {
 #     "OAUTH2_VALIDATOR_CLASS": "django_oauth2_server.oauth_validator.CustomOAuth2Validator",
