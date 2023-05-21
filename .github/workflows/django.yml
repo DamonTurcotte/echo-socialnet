@@ -36,7 +36,7 @@ jobs:
         python manage.py makemigrations chat
         python manage.py makemigrations
         python manage.py migrate
-        cp ~/oidc.key .
+        cp ~/oidc .
     - name: Run Tests
       run: |
         envfile=$(find ~/echo-runner -type f -wholename "*echo-env/bin/activate")
