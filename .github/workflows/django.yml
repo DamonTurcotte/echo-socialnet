@@ -32,8 +32,8 @@ jobs:
         python manage.py makemigrations users
         python manage.py makemigrations posts
         python manage.py makemigrations news
-        python manage.py makemigrations notifications
         python manage.py makemigrations chat
+        python manage.py makemigrations notifications
         python manage.py makemigrations
         python manage.py migrate
         cp ~/oidc .
