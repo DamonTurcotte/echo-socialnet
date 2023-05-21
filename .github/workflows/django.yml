@@ -1,4 +1,4 @@
-name: Django CI
+name: Echo Social Network
 
 on:
   push:
