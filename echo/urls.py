@@ -34,10 +34,10 @@ urlpatterns = [
     path('settings/', views.settings_view),
 ]
 
-urlpatterns += [
-    re_path(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
-    re_path(r'^profile/$', views.profile),
-]
-
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# urlpatterns += [
+#     re_path(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+#     re_path(r'^profile/$', views.profile),
+# ]
