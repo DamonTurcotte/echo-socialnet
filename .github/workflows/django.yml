@@ -5,6 +5,17 @@ on:
     branches: [ "main" ]
 
 jobs:
+  # to run bash commands before build starts (e.g. to install dependencies) use "pre-build" job
+  # pre-build copies ~/echo-runner/echo-app/echo-socialnet/echo-socialnet/media/ to ~/echo-runner/media/ (to preserve media files)
+
+  pre-build:
+    runs-on: self-hosted
+    steps:
+    - uses: actions/checkout@v3
+    - name: Copy Media Files
+      run: |
+        mv ~/echo-runner/echo-app/echo-socialnet/echo-socialnet/media ~/echo-runner/media
+
   build:
 
     runs-on: self-hosted
@@ -36,7 +47,9 @@ jobs:
         python manage.py makemigrations notifications
         python manage.py makemigrations
         python manage.py migrate
+        rm -r media
         cp ~/oidc .
+        cp ~/echo-runner/media .
     - name: Run Tests
       run: |
         envfile=$(find ~/echo-runner -type f -wholename "*echo-env/bin/activate")
