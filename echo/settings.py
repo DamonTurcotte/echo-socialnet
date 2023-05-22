@@ -10,6 +10,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = False
 
+ADMINS = [
+    ('Echo Admin', os.environ['ADMIN']),
+]
+
 ALLOWED_HOSTS = [
     os.environ['ALLOWED_HOSTS1'],
     os.environ['ALLOWED_HOSTS2'],
