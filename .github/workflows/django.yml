@@ -12,9 +12,7 @@ jobs:
     runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
-    - name: Copy Media Files
-      run: |
-        mv ~/echo-runner/echo-app/echo-socialnet/echo-socialnet/media ~/media
+
 
   build:
 
@@ -25,6 +23,10 @@ jobs:
         python-version: ['3.8']
 
     steps:
+    - uses: actions/checkout@v3
+    - name: Copy Media Files
+      run: |
+        mv ~/echo-runner/echo-app/echo-socialnet/echo-socialnet/media ~/media
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
