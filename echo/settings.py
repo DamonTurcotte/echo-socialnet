@@ -11,7 +11,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = False
 
 ADMINS = [
-    ('Echo Admin', os.environ['ADMIN']),
+    ('Echo Admin', os.environ['ADMIN'])
 ]
 
 ALLOWED_HOSTS = [
