@@ -5,17 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  # to run bash commands before build starts (e.g. to install dependencies) use "pre-build" job
-  # pre-build copies ~/echo-runner/echo-app/echo-socialnet/echo-socialnet/media/ to ~/echo-runner/media/ (to preserve media files)
-  pre-build:
-    runs-on: self-hosted
-    steps:
-    - name: Copy Media Files
-      run: |
-        cp -r /home/altagrave/echo-runner/echo-app/echo-socialnet/echo-socialnet/media /home/altagrave/media
-
   build:
-
     runs-on: self-hosted
     strategy:
       max-parallel: 4
