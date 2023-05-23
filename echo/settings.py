@@ -153,7 +153,10 @@ else:
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+if DEBUG:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+else:
+    MEDIA_ROOT = os.environ['MEDIA_ROOT']
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
