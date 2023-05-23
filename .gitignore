@@ -4,3 +4,5 @@ migrations/
 .env
 media/users/cyber.jpeg
 media/users/jet.jpg
+oidc.pub
+oidc
