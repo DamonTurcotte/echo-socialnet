@@ -10,10 +10,9 @@ jobs:
   pre-build:
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v3
     - name: Copy Media Files
       run: |
-        mv ~/echo-runner/echo-app/echo-socialnet/echo-socialnet/media ~/media
+        cp -r /home/altagrave/echo-runner/echo-app/echo-socialnet/echo-socialnet/media /home/altagrave/media
 
   build:
 
