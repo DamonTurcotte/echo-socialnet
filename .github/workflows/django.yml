@@ -42,9 +42,7 @@ jobs:
         python manage.py makemigrations notifications
         python manage.py makemigrations
         python manage.py migrate
-        rm -r media
         cp ~/oidc .
-        mv ~/media .
     - name: Run Tests
       run: |
         envfile=$(find ~/echo-runner -type f -wholename "*echo-env/bin/activate")
