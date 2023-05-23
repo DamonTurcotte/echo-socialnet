@@ -5,5 +5,6 @@ app_name = 'users'
 
 urlpatterns = [
     path('signup/', views.signup_view, name='signup'),
-    path('profile/<uuid>/', views.profile_view, name='profile')
+    path('profile/<uuid>/', views.profile_view, name='profile'),
+    path('user_data/', views.EchoUserResourceView.as_view(), name='user_data'),
 ]
