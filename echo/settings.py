@@ -126,6 +126,14 @@ PASSWORD_HASHERS = [
 #     },
 # }
 
+# OAUTH2_PROVIDER = {
+#     "OIDC_ENABLED": True,
+#     "OIDC_RSA_PRIVATE_KEY": os.environ['OIDC_RSA_PRIVATE_KEY'],
+#     "SCOPES": { "all": "All scopes" },
+# }
+
+LOGIN_URL = '/admin/login/'
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
