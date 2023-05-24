@@ -132,7 +132,7 @@ PASSWORD_HASHERS = [
 #     "SCOPES": { "all": "All scopes" },
 # }
 
-LOGIN_URL = '/admin/login/'
+LOGIN_URL = '/accounts/login/'
 
 LANGUAGE_CODE = 'en-us'
 
