@@ -24,6 +24,7 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     'corsheaders',
     'oauth2_provider',
+    'rest_framework',
     'news.apps.NewsConfig',
     'notifications.apps.NotificationsConfig',
     'chat.apps.ChatConfig',
