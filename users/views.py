@@ -106,3 +106,23 @@ def profile_view(request, uuid):
     }
 
     return render(request, 'users/profile.html', context=context)
+
+
+# protected resource view for returning user data to remote users
+class EchoUserResourceView(ProtectedResourceView):
+    def get(self, request, *args, **kwargs):
+        user = request.resource_owner
+
+        data = {
+            'username': user.username,
+            'bio': user.bio,
+            'avatar': user.avatar.url,
+            'email': user.email,
+            'date_joined': user.date_joined.date(),
+            'last_login': user.since_last_login(),
+            'num_following': user.num_following(),
+            'num_followers': user.num_followers(),
+        }
+
+        return JsonResponse(data)
+ 
