@@ -11,6 +11,7 @@ import math
 from io import BytesIO
 from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import JsonResponse
+from rest_framework import status
 
 def signup_view(request):
 
@@ -107,7 +108,7 @@ def profile_view(request, uuid):
     return render(request, 'users/profile.html', context=context)
 
 
-# protected resource view for returning user data
+# protected resource view for returning user data to remote users
 class EchoUserResourceView(ProtectedResourceView):
     def get(self, request, *args, **kwargs):
         user = request.resource_owner
@@ -122,5 +123,38 @@ class EchoUserResourceView(ProtectedResourceView):
             'num_following': user.num_following(),
             'num_followers': user.num_followers(),
         }
+
+        return JsonResponse(data)
+    
+# protected resource view for returning user data to client systems
+class SpecifyEchoUserResourceView(ProtectedResourceView):
+    def get(self, request, *args, **kwargs):
+        try:
+            user = EchoUser.objects.get(username=request.GET.get('username'))
+        except:
+            user = None
+
+        if user:
+            password = request.GET.get('password')
+            if user.check_password(password):
+                data = {
+                    'status': status.HTTP_200_OK,
+                    'username': user.username,
+                    'bio': user.bio,
+                    'avatar': user.avatar.url,
+                    'email': user.email,
+                    'date_joined': user.date_joined.date(),
+                    'last_login': user.since_last_login(),
+                    'num_following': user.num_following(),
+                    'num_followers': user.num_followers(),
+                }
+            else:
+                data = {
+                    'status': status.HTTP_401_UNAUTHORIZED,
+                }
+        else:
+            data = {
+                'status': status.HTTP_404_NOT_FOUND,
+            }
 
         return JsonResponse(data)
