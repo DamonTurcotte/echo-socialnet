@@ -17,7 +17,6 @@
 
 <form class="login-form" id="login-form" action="/accounts/login/" method="post">
   <div class="login-header">Log in to Echo Social Network</div>
-
   {% csrf_token %}
 
   <input class="login-username" type="text" name="username" autofocus="true" autocapitalize="none" autocomplete="username" maxlength="25" id="username" placeholder="Username" required>
