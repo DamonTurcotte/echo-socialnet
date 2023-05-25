@@ -127,11 +127,15 @@ PASSWORD_HASHERS = [
 #     },
 # }
 
-# OAUTH2_PROVIDER = {
-#     "OIDC_ENABLED": True,
-#     "OIDC_RSA_PRIVATE_KEY": os.environ['OIDC_RSA_PRIVATE_KEY'],
-#     "SCOPES": { "all": "All scopes" },
-# }
+OAUTH2_PROVIDER = {
+    "OIDC_ENABLED": True,
+    "OIDC_RSA_PRIVATE_KEY": os.environ['OIDC_RSA_PRIVATE_KEY'],
+    "SCOPES": {
+        'openid': "OpenID Connect scope",
+        'read': 'Read scope',
+        'write': 'Write scope',
+    }
+}
 
 LOGIN_URL = '/accounts/login/'
 
