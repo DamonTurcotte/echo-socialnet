@@ -14,10 +14,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Install Dependencies, VENV, Make Django Migrations
       run: |
         appfile=$(find ~/echo-runner -type f -name "*manage.py")
@@ -36,6 +38,7 @@ jobs:
         python manage.py makemigrations
         python manage.py migrate
         cp ~/oidc.key .
+
     - name: Run Tests
       run: |
         envfile=$(find ~/echo-runner -type f -wholename "*echo-env/bin/activate")
