@@ -128,7 +128,6 @@ PASSWORD_HASHERS = [
 # }
 
 OAUTH2_PROVIDER = {
-    "OAUTH2_VALIDATOR_CLASS": "echo.oauth_validators.CustomValidator",
     "OIDC_ENABLED": True,
     "OIDC_RSA_PRIVATE_KEY": os.environ['OIDC_RSA_PRIVATE_KEY'],
     "OIDC_RSA_PRIVATE_KEYS_INACTIVE": [
