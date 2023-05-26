@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
-DEBUG = False
+DEBUG = True
 
 ADMINS = [
     ('Echo Admin', os.environ['ADMIN'])
@@ -40,10 +40,10 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'oauth2_provider.middleware.OAuth2TokenMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -128,6 +128,7 @@ PASSWORD_HASHERS = [
 # }
 
 OAUTH2_PROVIDER = {
+    "OAUTH2_VALIDATOR_CLASS": "echo.oauth_validators.CustomOAuth2Validator",
     "OIDC_ENABLED": True,
     "OIDC_RSA_PRIVATE_KEY": os.environ['OIDC_RSA_PRIVATE_KEY'],
     "OIDC_RSA_PRIVATE_KEYS_INACTIVE": [
