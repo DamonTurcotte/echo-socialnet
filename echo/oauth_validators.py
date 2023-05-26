@@ -11,7 +11,3 @@ class CustomValidator(OAuth2Validator):
             "preferred_username": request.user.username,
             "picture": request.user.avatar,
         }
-    
-    def get_userinfo_claims(self, request):
-        claims = super().get_userinfo_claims(request)
-        return claims
