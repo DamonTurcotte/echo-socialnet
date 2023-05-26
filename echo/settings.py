@@ -130,6 +130,10 @@ PASSWORD_HASHERS = [
 OAUTH2_PROVIDER = {
     "OIDC_ENABLED": True,
     "OIDC_RSA_PRIVATE_KEY": os.environ['OIDC_RSA_PRIVATE_KEY'],
+    "OIDC_RSA_PRIVATE_KEYS_INACTIVE": [
+        os.environ.get("OIDC_RSA_PRIVATE_KEY_2"),
+        os.environ.get("OIDC_RSA_PRIVATE_KEY_3")
+    ],
     "SCOPES": {
         'openid': "OpenID Connect scope",
         'read': 'Read scope',
