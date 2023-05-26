@@ -40,12 +40,12 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'oauth2_provider.middleware.OAuth2TokenMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -128,6 +128,7 @@ PASSWORD_HASHERS = [
 # }
 
 OAUTH2_PROVIDER = {
+    "OAUTH2_VALIDATOR_CLASS": "echo.oauth2_validator.CustomValidator",
     "OIDC_ENABLED": True,
     "OIDC_RSA_PRIVATE_KEY": os.environ['OIDC_RSA_PRIVATE_KEY'],
     "OIDC_RSA_PRIVATE_KEYS_INACTIVE": [
