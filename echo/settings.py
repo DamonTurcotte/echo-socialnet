@@ -115,18 +115,6 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.ScryptPasswordHasher',
 ]
 
-# OAUTH2_PROVIDER = {
-#     "OAUTH2_VALIDATOR_CLASS": "django_oauth2_server.oauth_validator.CustomOAuth2Validator",
-#     "OIDC_ENABLED": True,
-#     "PKCE_REQUIRED": False,
-#     "OIDC_RSA_PRIVATE_KEY": os.environ['OIDC_RSA_PRIVATE_KEY'],
-#     'SCOPES': {
-#         'read': 'Read scope',
-#         'write': 'Write scope',
-#         'openid': "OpenID Connect scope",
-#     },
-# }
-
 OAUTH2_PROVIDER = {
     "OAUTH2_VALIDATOR_CLASS": "echo.oauth_validators.CustomOAuth2Validator",
     "OIDC_ENABLED": True,
@@ -141,6 +129,8 @@ OAUTH2_PROVIDER = {
         'write': 'Write scope',
     }
 }
+
+BASE_URL = os.environ['BASE_URL']
 
 LOGIN_URL = '/accounts/login/'
 
