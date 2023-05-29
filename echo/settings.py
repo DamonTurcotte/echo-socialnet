@@ -128,6 +128,7 @@ OAUTH2_PROVIDER = {
     ],
     "SCOPES": {
         'openid': "OpenID Connect scope",
+        'introspection': 'Introspect scope',
         'read': 'Read scope',
         'write': 'Write scope',
     }
