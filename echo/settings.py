@@ -113,6 +113,15 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.ScryptPasswordHasher',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+      'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
 OAUTH2_PROVIDER = {
     "OAUTH2_VALIDATOR_CLASS": "echo.oauth_validators.CustomOAuth2Validator",
     'ACCESS_TOKEN_EXPIRE_SECONDS': 86400,
@@ -128,6 +137,7 @@ OAUTH2_PROVIDER = {
         'openid': "OpenID Connect scope",
         'read': 'Read scope',
         'write': 'Write scope',
+        'introspection': 'Introspect token scope',
     }
 }
 
