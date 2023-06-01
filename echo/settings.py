@@ -133,6 +133,8 @@ OAUTH2_PROVIDER = {
         os.environ.get("OIDC_RSA_PRIVATE_KEY_2"),
         os.environ.get("OIDC_RSA_PRIVATE_KEY_3")
     ],
+    "OIDC_RP_INITIATED_LOGOUT_ENABLED": True,
+    "OIDC_RP_INITIATED_LOGOUT_ALWAYS_PROMPT": True,
     "SCOPES": {
         'openid': "OpenID Connect scope",
         'read': 'Read scope',
