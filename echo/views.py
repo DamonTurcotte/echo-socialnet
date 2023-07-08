@@ -63,7 +63,7 @@ def ajax_response(request):
         }
 
         if request.GET['action'] == 'get_feed_posts':
-            posts = Post.objects.filter(reply_to=None, article_comment=None).annotate(
+            posts = Post.objects.filter(reply_to=None).filter(article_comment=None).annotate(
                 popularity=(Count('likes') + Count('replies') + Count('reposts'))
                 ).order_by('datestamp', 'popularity', 'timestamp').reverse()
             data['total'] = len(posts)
