@@ -52,11 +52,16 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'echo.urls'
 
-CORS_ORIGIN_ALLOW_ALL = True
-
-# CORS_ORIGIN_WHITELIST = [
-#     "https://turcotte.tech",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    'https://turcotte.tech',
+    'https://www.turcotte.tech',
+    'https://api.turcotte.tech',
+    'https://echonetwork.app',
+    'https://www.echonetwork.app',
+    'http://127.0.0.1:8000',
+    'http://127.0.0.1:3000',
+    'localhost',
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
