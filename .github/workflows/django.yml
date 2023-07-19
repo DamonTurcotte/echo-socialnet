@@ -38,7 +38,6 @@ jobs:
         python manage.py makemigrations
         python manage.py migrate
         python manage.py collectstatic --noinput
-        cp ~/oidc.key .
 
     - name: Run Tests
       run: |
