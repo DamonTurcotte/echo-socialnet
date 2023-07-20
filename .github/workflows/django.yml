@@ -26,7 +26,7 @@ jobs:
         appdir=$(dirname $appfile)
         cd $appdir
         echo "${{ secrets.ECHO_ENV }}" > echo/.env
-        virtualenv echo-env
+        python3 -m venv echo-env
         source echo-env/bin/activate
         pip install -r requirements.txt
         pip install gunicorn psycopg2-binary
