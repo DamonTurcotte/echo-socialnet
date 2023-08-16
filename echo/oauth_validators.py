@@ -1,4 +1,5 @@
 from oauth2_provider.oauth2_validators import OAuth2Validator
+from .settings import BASE_URL
 from oauth2_provider.models import clear_expired
 
 class CustomOAuth2Validator(OAuth2Validator):
@@ -11,7 +12,7 @@ class CustomOAuth2Validator(OAuth2Validator):
             "family_name": request.user.last_name,
             "email": request.user.email,
             "preferred_username": request.user.username,
-            "picture":  request.build_absolute_uri(request.user.avatar.url),
+            "picture":  BASE_URL + request.user.avatar.url,
         }
     
     def get_userinfo_claims(self, request):
