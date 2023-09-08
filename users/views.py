@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.contrib.auth import login
 from django.core.files.base import ContentFile
 from django.contrib.auth.hashers import make_password
-from .forms import EchoUserCreationForm
+from .forms import EchoUserCreationForm, CustomAuthenticationForm
 from .models import EchoUser, Follow
 from django.contrib.auth.decorators import login_required
 from PIL import Image
@@ -12,6 +12,10 @@ from io import BytesIO
 from oauth2_provider.views.generic import ProtectedResourceView
 from django.http import JsonResponse
 from rest_framework import status
+from django.contrib.auth.views import LoginView
+
+class CustomLoginView(LoginView):
+    form_class = CustomAuthenticationForm
 
 def signup_view(request):
 
