@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'oauth2_provider',
     'rest_framework',
+    'captcha',
     'news.apps.NewsConfig',
     'notifications.apps.NotificationsConfig',
     'chat.apps.ChatConfig',
@@ -58,6 +59,8 @@ CORS_ALLOWED_ORIGINS = [
     'https://api.turcotte.tech',
     'https://echonetwork.app',
     'https://www.echonetwork.app',
+    'https://google.com',
+    'https://www.google.com',
     'http://127.0.0.1:8000',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:5173',
@@ -150,6 +153,12 @@ OAUTH2_PROVIDER = {
         'introspection': 'Introspect token scope',
     }
 }
+
+RECAPTCHA_PUBLIC_KEY = os.environ['RECAPTCHA_PUBLIC_KEY']
+
+RECAPTCHA_PRIVATE_KEY = os.environ['RECAPTCHA_PRIVATE_KEY']
+
+RECAPTCHA_REQUIRED_SCORE = 0.85
 
 BASE_URL = os.environ['BASE_URL']
 
