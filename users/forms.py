@@ -5,6 +5,8 @@ from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV2Checkbox
 
 class EchoUserCreationForm(forms.ModelForm):
+    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+
     class Meta:
         model = EchoUser
         fields = ['username', 'password', 'bio', 'avatar']
