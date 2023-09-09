@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'oauth2_provider',
     'rest_framework',
-    'captcha',
     'news.apps.NewsConfig',
     'notifications.apps.NotificationsConfig',
     'chat.apps.ChatConfig',
@@ -153,12 +152,6 @@ OAUTH2_PROVIDER = {
         'introspection': 'Introspect token scope',
     }
 }
-
-RECAPTCHA_PUBLIC_KEY = os.environ['RECAPTCHA_PUBLIC_KEY']
-
-RECAPTCHA_PRIVATE_KEY = os.environ['RECAPTCHA_PRIVATE_KEY']
-
-RECAPTCHA_REQUIRED_SCORE = 0.85
 
 BASE_URL = os.environ['BASE_URL']
 
