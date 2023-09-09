@@ -18,7 +18,6 @@ from django.urls import path, include
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from users.views import CustomLoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,7 +25,6 @@ urlpatterns = [
     path('follows/', views.follows_feed),
     path('ajax/', views.ajax_response),
     path('search/', views.search_response),
-    path('accounts/login/', CustomLoginView.as_view()),
     path('accounts/', include('django.contrib.auth.urls')),
     path('users/', include('users.urls')),
     path('posts/', include('posts.urls')),
