@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
-DEBUG = False
+DEBUG = True
 
 ADMINS = [
     ('Echo Admin', os.environ['ADMIN'])
@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'oauth2_provider',
     'rest_framework',
+    'captcha',
     'news.apps.NewsConfig',
     'notifications.apps.NotificationsConfig',
     'chat.apps.ChatConfig',
@@ -152,6 +153,10 @@ OAUTH2_PROVIDER = {
         'introspection': 'Introspect token scope',
     }
 }
+
+RECAPTCHA_PUBLIC_KEY = os.environ['RECAPTCHA_PUBLIC_KEY']
+
+RECAPTCHA_PRIVATE_KEY = os.environ['RECAPTCHA_PRIVATE_KEY']
 
 BASE_URL = os.environ['BASE_URL']
 
