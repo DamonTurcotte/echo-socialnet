@@ -19,12 +19,12 @@
 
     <input class="login-avatar" type="file" name="avatar" accept="image/*" id="avatar">
 
-    <div class="login-avatar-container">
+    <div class="login-avatar-container" style="margin-bottom: 10px">
       <input class="login-avatar-button" type="button" onclick="$('.login-avatar').click()" value="Upload Avatar">
       <input type="text" class="login-avatar-path" placeholder="empty" disabled>
     </div>
 
-    <div class="crop-container">
+    <div class="crop-container" style="margin-bottom: 15px">
       
       <div class="crop-image-and-dirs">
         <div class="crop-y">
@@ -55,7 +55,7 @@
     <input class="crop-save-height" type="hidden" name="height" value="">
     <input class="crop-save-dimensions" type="hidden" name="dimensions" value="">
 
-    <div style="margin-top: 10px">
+    <div>
       {{form.captcha}}
     </div>
 
