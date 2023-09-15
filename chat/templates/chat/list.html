@@ -15,7 +15,7 @@
   <div class="chat-list">
 
     {% for chat in chats %}
-    <a class="chat-instance" onclick="location.href='/chat/{{chat.uuid}}'">
+    <a class="chat-instance" onclick="location.href='/chat/{{chat.uuid}}'" style="cursor: pointer;">
 
       <img class="chat-avatar" src="{{chat.user.avatar.url}}">
 
