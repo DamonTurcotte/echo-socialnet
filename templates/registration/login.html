@@ -31,10 +31,17 @@
   <input type="hidden" name="next" value="{{next}}">
 
   <div class="login-no-account">
-    If you do not have an account, <a href="/users/signup/">Sign Up</a>.
+    If you do not have an account, <a id="signup-redirect" href="/users/signup/">Sign Up</a>.
   </div>
 </form>
 </div>
-
+<script>
+  window.onload = () => {
+    if (window.location.search.length > 0) {
+      let redirect = document.getElementById("signup-redirect");
+      redirect.href += window.location.search;
+    }
+  }
+</script>
 
 {% endblock %}
