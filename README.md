@@ -14,6 +14,8 @@ A fully functional Twitter-like social networking application built on the Pytho
 - Current news feeds for tech, entertainment and world news
 - User, post and news article search functionality
 - Optimized for both desktop and mobile users
+- Public API access to display content through 3rd parties
+- Offers OIDC single sign-on provider functionality
 
 ## Optimizations
 
@@ -24,11 +26,11 @@ Custom password hashing, security tokens and both server and client-side authent
 Recursive model relationship between private message and chat instance models, mimicking SQL associative entities, in order to reduce number of redundant, pre-filtered objects returned in querysets and reduce server load.
 
 Temporary client-side storage of user session authentication data to reduce number of rejected server requests by allowing client to pre-emptively handle the majority of request validation.
+
 ## Roadmap
 
-- Implement Rest API
+- Split into single page application and REST API
 - Migrate to ASGI
-- Create Echo social login for related sites
 
 ## Tech Stack
 
