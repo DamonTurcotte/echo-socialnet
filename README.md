@@ -34,9 +34,25 @@ Temporary client-side storage of user session authentication data to reduce numb
 
 ## Tech Stack
 
-**Client:** HTML, CSS, jQuery
+**Front End:**
+- jQuery
+- JavaScript
+- CSS
+- HTML
 
-**Server:** Python, Django, PostgreSQL
+**Back End:**
+- Python
+- Django
+- Django Template Language
+- Django REST Framework
+- Django OAuth Toolkit
+- OAuth 2.0
+
+**Server:**
+- NGINX
+- Gunicorn
+- PostgreSQL
+- PGAdmin 4
 
 ## License
 
