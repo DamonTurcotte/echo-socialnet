@@ -47,12 +47,7 @@ Temporary client-side storage of user session authentication data to reduce numb
 - Django REST Framework
 - Django OAuth Toolkit
 - OAuth 2.0
-
-**Server:**
-- NGINX
-- Gunicorn
 - PostgreSQL
-- PGAdmin 4
 
 ## License
 
