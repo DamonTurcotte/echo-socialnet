@@ -60,10 +60,17 @@
     </div>
 
     <input class="login-submit" type="submit" value="Sign Up">
-    <input type="hidden" name="next" value="{{next}}">
+    <input type="hidden" name="next" id="next" value="{{next}}">
 
   </form>
 
 </div>
-
+<script>
+  window.onload = () => {
+    if (window.location.search.length > 0) {
+      let redirect = document.getElementById("next");
+      redirect.value = window.location.search;
+    }
+  }
+</script>
 {% endblock %}
