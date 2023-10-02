@@ -57,14 +57,21 @@ def signup_view(request):
                 )
                 user.save()
                 login(request, user)
-                return redirect(reverse('home'))
-            
+
             else:
                 user = form.save(commit=False)
                 user.password = hashed_pass
                 user.save()
                 login(request, user)
-                return redirect(reverse('home'))
+            
+            next = request.POST.get("next")
+            if next:
+                try:
+                    next = next.lstrip("?next=")
+                    return redirect(next)
+                except:
+                    pass
+            return redirect(reverse('home'))
 
     else:
         form = EchoUserCreationForm()
