@@ -38,7 +38,7 @@ def signup_view(request):
                 dimensions = int(math.floor(float(request.POST['dimensions'])))
 
                 image = Image.open(request.FILES['avatar'])
-                resized_image = image.resize((width, height), Image.ANTIALIAS)
+                resized_image = image.resize((width, height), Image.LANCZOS)
                 new_image = resized_image.crop((x, y, dimensions+x, dimensions+y))
 
                 new_image_io = BytesIO()
