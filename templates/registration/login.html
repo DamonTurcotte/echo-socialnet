@@ -40,7 +40,7 @@
     if (window.location.search.length > 0) {
       let redirect = document.getElementById("signup-redirect");
       let next = document.getElementById("next");
-      redirect.href += `?next=${encodeURIComponent(next.value)}`;
+      redirect.href += `?next=${next.value}`;
     }
   }
 </script>
