@@ -5,3 +5,5 @@ migrations/
 media/users/cyber.jpeg
 media/users/jet.jpg
 /oidc*
+static/rest_framework
+static/admin
